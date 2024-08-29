@@ -1,5 +1,7 @@
 package com.intuit.foodorderingsystem.entity;
 
+import com.intuit.foodorderingsystem.enums.ItemState;
+import com.intuit.foodorderingsystem.enums.State;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,6 +36,10 @@ public class RestaurantMenuEntity {
 
     @Column(name = "rating")
     private Float rating;
+
+    @Column(name = "item_state", nullable = false)
+    @Convert(converter = ItemState.Converter.class)
+    private ItemState itemState;
 
 
 }

@@ -1,7 +1,6 @@
 package com.intuit.foodorderingsystem.entity;
 
 import com.intuit.foodorderingsystem.enums.RestaurantType;
-import com.intuit.foodorderingsystem.enums.State;
 import jakarta.persistence.*;
 import lombok.*;
 
