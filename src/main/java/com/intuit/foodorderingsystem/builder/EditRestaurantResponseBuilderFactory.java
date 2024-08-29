@@ -17,6 +17,7 @@ public class EditRestaurantResponseBuilderFactory {
                 .state(restaurantEntity.getState())
                 .pinCode(restaurantEntity.getPinCode())
                 .contactNumber(restaurantEntity.getContactNumber())
+                .restaurantType(restaurantEntity.getRestaurantType())
                 .build();
     }
 }

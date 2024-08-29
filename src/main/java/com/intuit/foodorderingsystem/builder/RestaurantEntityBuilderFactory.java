@@ -14,6 +14,7 @@ public class RestaurantEntityBuilderFactory {
                 .state(createRestaurantRequest.getState())
                 .pinCode(createRestaurantRequest.getPinCode())
                 .contactNumber(createRestaurantRequest.getContactNumber())
+                .restaurantType(createRestaurantRequest.getRestaurantType())
                 .build();
     }
 }

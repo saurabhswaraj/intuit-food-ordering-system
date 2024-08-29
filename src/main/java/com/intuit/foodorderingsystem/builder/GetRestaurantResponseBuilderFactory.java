@@ -18,6 +18,7 @@ public class GetRestaurantResponseBuilderFactory {
                 .pinCode(restaurantEntity.getPinCode())
                 .contactNumber(restaurantEntity.getContactNumber())
                 .maxOrderCapacity(restaurantCapacityEntity.getMaxCapacity())
+                .restaurantType(restaurantEntity.getRestaurantType())
                 .build();
     }
 }

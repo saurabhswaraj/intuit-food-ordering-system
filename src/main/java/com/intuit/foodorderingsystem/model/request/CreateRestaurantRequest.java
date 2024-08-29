@@ -2,6 +2,7 @@ package com.intuit.foodorderingsystem.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.intuit.foodorderingsystem.constant.RegexConstants;
+import com.intuit.foodorderingsystem.enums.RestaurantType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
@@ -23,4 +24,5 @@ public class CreateRestaurantRequest {
     Integer maxOrderCapacity;
     @Pattern(regexp = RegexConstants.PHONE_NUMBER_REGEX)
     String contactNumber;
+    RestaurantType restaurantType;
 }

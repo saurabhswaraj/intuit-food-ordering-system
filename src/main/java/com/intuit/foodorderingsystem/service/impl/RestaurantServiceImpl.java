@@ -1,6 +1,7 @@
 package com.intuit.foodorderingsystem.service.impl;
 
 import com.intuit.foodorderingsystem.builder.*;
+import com.intuit.foodorderingsystem.constant.Messages;
 import com.intuit.foodorderingsystem.constant.RegexConstants;
 import com.intuit.foodorderingsystem.entity.RestaurantCapacityEntity;
 import com.intuit.foodorderingsystem.entity.RestaurantEntity;
@@ -22,8 +23,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public CreateRestaurantResponse createRestaurant(CreateRestaurantRequest createRestaurantRequest) {
 
         if(restaurantExist(createRestaurantRequest.getContactNumber())) {
-            throw new AlreadyExistException("Restaurant already Exist");
+            throw new AlreadyExistException(Messages.RESTAURANT_ALREADY_EXIST);
         }
         RestaurantEntity restaurantEntity = RestaurantEntityBuilderFactory.build(createRestaurantRequest);
         RestaurantCapacityEntity restaurantCapacityEntity = transactionUtil.saveRestaurantDetails(restaurantEntity, createRestaurantRequest);
@@ -61,7 +60,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public GetRestaurantResponse getSingleRestaurant(Long restaurantId) {
         RestaurantEntity restaurantEntity = getRestaurantEntity(restaurantId);
         if(restaurantEntity == null) {
-            throw new DoNotExistException("Restaurant with this id do not exist");
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
         }
         return GetRestaurantResponseBuilderFactory.build(restaurantEntity,
                         restaurantEntity.getRestaurantCapacityEntity().stream()
@@ -73,7 +72,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public EditRestaurantResponse editRestaurants(Long restaurantId, EditRestaurantRequest editRestaurantRequest) {
         RestaurantEntity restaurantEntity = getRestaurantEntity(restaurantId);
         if(restaurantEntity == null) {
-            throw new DoNotExistException("Restaurant with this id do not exist");
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
         }
         if (!StringUtils.isAllBlank(editRestaurantRequest.getName())) {
             restaurantEntity.setName(editRestaurantRequest.getName());
@@ -92,7 +91,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
         if (!StringUtils.isAllBlank(editRestaurantRequest.getContactNumber())) {
             if(!editRestaurantRequest.getContactNumber().matches(RegexConstants.PHONE_NUMBER_REGEX)) {
-                throw new PhoneNumberNotValidException("Please check the phone number");
+                throw new PhoneNumberNotValidException(Messages.PHONE_NUMBER_CHECK);
             }
             restaurantEntity.setContactNumber(editRestaurantRequest.getContactNumber());
         }
@@ -104,7 +103,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public EmptyResponse deactivateRestaurants(Long restaurantId) {
         RestaurantEntity restaurantEntity = getRestaurantEntity(restaurantId);
         if(restaurantEntity == null) {
-            throw new DoNotExistException("Restaurant with this id do not exist");
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
         }
         restaurantEntity.setIsActive(false);
         restaurantRepository.save(restaurantEntity);
@@ -116,7 +115,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantEntity != null;
     }
 
-    private RestaurantEntity getRestaurantEntity(Long restaurantId) {
+    protected RestaurantEntity getRestaurantEntity(Long restaurantId) {
         return restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
     }
 

@@ -2,6 +2,7 @@ package com.intuit.foodorderingsystem.config;
 
 import com.intuit.foodorderingsystem.exception.AlreadyExistException;
 import com.intuit.foodorderingsystem.exception.DoNotExistException;
+import com.intuit.foodorderingsystem.exception.IneligibleRequestException;
 import com.intuit.foodorderingsystem.exception.PhoneNumberNotValidException;
 import com.intuit.foodorderingsystem.model.ErrorFields;
 import com.intuit.foodorderingsystem.model.ErrorMessage;
@@ -34,7 +35,7 @@ public class ControllerAdvice {
         return new BaseResponseModel<>(errorMessage);
     }
 
-    @ExceptionHandler(PhoneNumberNotValidException.class)
+    @ExceptionHandler({PhoneNumberNotValidException.class, IneligibleRequestException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     BaseResponseModel validationErrorPhone(Exception exception) {
         ErrorMessageCommon errorMessage = getErrorMessage(exception);
@@ -44,7 +45,7 @@ public class ControllerAdvice {
     }
 
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     BaseResponseModel validationError(Exception exception) {
 

@@ -1,5 +1,7 @@
 package com.intuit.foodorderingsystem.entity;
 
+import com.intuit.foodorderingsystem.enums.RestaurantType;
+import com.intuit.foodorderingsystem.enums.State;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,6 +37,10 @@ public class RestaurantEntity {
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
+
+    @Convert(converter = RestaurantType.Converter.class)
+    @Column(name = "restaurant_type", nullable = false)
+    private RestaurantType restaurantType;
 
     @Column(name = "contact_number", nullable = false, unique = true)
     private String contactNumber;

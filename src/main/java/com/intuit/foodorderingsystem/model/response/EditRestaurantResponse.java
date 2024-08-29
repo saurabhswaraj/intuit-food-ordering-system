@@ -1,5 +1,6 @@
 package com.intuit.foodorderingsystem.model.response;
 
+import com.intuit.foodorderingsystem.enums.RestaurantType;
 import lombok.Builder;
 import lombok.Value;
 
@@ -14,4 +15,5 @@ public class EditRestaurantResponse {
     String pinCode;
     Integer maxOrderCapacity;
     String contactNumber;
+    RestaurantType restaurantType;
 }
