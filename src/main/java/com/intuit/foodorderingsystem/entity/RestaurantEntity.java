@@ -36,7 +36,7 @@ public class RestaurantEntity {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    @Column(name = "contact_number", nullable = false)
+    @Column(name = "contact_number", nullable = false, unique = true)
     private String contactNumber;
 
     @OneToMany(mappedBy = "restaurantEntity", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
