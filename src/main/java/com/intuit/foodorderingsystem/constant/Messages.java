@@ -7,4 +7,6 @@ public class Messages {
     public static final String PHONE_NUMBER_CHECK = "Please check the phone number";
     public static final String ALL_ITEMS_NOT_VEG = "All items in the menu is not veg for veg restaurant";
     public static final String HAS_REPEATED_ITEMS = "Request has repeated Items";
+
+    public static final String USER_ALREADY_EXIST = "User with this phone number already Exist";
 }
