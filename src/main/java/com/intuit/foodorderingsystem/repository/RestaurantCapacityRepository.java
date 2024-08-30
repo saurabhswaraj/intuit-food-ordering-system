@@ -16,6 +16,6 @@ import java.util.Optional;
 public interface RestaurantCapacityRepository extends JpaRepository<RestaurantCapacityEntity, Long> {
 
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
-    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value="5000")})
+    @QueryHints({@QueryHint(name = "jakarta.persistence.lock.timeout", value="5000")})
     List<RestaurantCapacityEntity> findByRestaurantIdIn(List<Long> restaurantId);
 }
