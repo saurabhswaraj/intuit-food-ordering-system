@@ -41,3 +41,5 @@ Assumptions
 > Restaurants can also disable themselves. After disabling they will not be visible anywhere
 
 > If restaurants label themselves as veg then they can add just veg menu Items
+
+> 

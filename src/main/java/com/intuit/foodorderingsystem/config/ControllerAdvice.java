@@ -1,9 +1,6 @@
 package com.intuit.foodorderingsystem.config;
 
-import com.intuit.foodorderingsystem.exception.AlreadyExistException;
-import com.intuit.foodorderingsystem.exception.DoNotExistException;
-import com.intuit.foodorderingsystem.exception.IneligibleRequestException;
-import com.intuit.foodorderingsystem.exception.PhoneNumberNotValidException;
+import com.intuit.foodorderingsystem.exception.*;
 import com.intuit.foodorderingsystem.model.ErrorFields;
 import com.intuit.foodorderingsystem.model.ErrorMessage;
 import com.intuit.foodorderingsystem.model.ErrorMessageCommon;
@@ -26,7 +23,7 @@ import java.util.Optional;
 @Log4j2
 public class ControllerAdvice {
 
-    @ExceptionHandler({AlreadyExistException.class, DoNotExistException.class})
+    @ExceptionHandler({AlreadyExistException.class, DoNotExistException.class, OrderCanNotBeCreatedException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     BaseResponseModel alreadyExistException(Exception exception) {
         ErrorMessageCommon errorMessage = getErrorMessage(exception);
