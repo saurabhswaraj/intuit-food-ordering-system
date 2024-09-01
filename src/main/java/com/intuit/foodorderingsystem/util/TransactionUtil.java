@@ -5,6 +5,7 @@ import com.intuit.foodorderingsystem.builder.OrdersEntityBuilderFactory;
 import com.intuit.foodorderingsystem.builder.RestaurantCapacityEntityBuilderFactory;
 import com.intuit.foodorderingsystem.constant.Messages;
 import com.intuit.foodorderingsystem.entity.*;
+import com.intuit.foodorderingsystem.enums.OrderStatus;
 import com.intuit.foodorderingsystem.exception.OrderCanNotBeCreatedException;
 import com.intuit.foodorderingsystem.model.request.CreateOrderRequest;
 import com.intuit.foodorderingsystem.model.request.CreateRestaurantRequest;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class TransactionUtil {
     }
 
     @Transactional
-    public void processOrder(Long userId, List<CreateOrderRequest> createOrderRequestList) {
+    public long processOrder(Long userId, List<CreateOrderRequest> createOrderRequestList) {
 
         OrdersEntity ordersEntity = OrdersEntityBuilderFactory.build(userId);
         ordersEntity = ordersRepository.save(ordersEntity);
@@ -98,5 +100,25 @@ public class TransactionUtil {
             restaurantCapacityRepository.saveAll(restaurantCapacityEntities);
             log.info("ho gya");
         }
+
+        return ordersEntity.getId();
+    }
+
+    @Transactional
+    public void markOrderDispatched(Long orderId, Long restaurantId) {
+
+        Integer capacity = 0;
+        List<OrderRestaurantMenuEntity> orderRestaurantMenuEntityList = ordersRestaurantMenuRepository.findAllByOrderIdAndRestaurantId(orderId, restaurantId);
+        for(OrderRestaurantMenuEntity orderRestaurantMenuEntity : orderRestaurantMenuEntityList) {
+            orderRestaurantMenuEntity.setOrderCompletionTime(ZonedDateTime.now());
+            orderRestaurantMenuEntity.setOrderStatus(OrderStatus.DISPATCHED);
+            capacity += orderRestaurantMenuEntity.getQuantity();
+        }
+        ordersRestaurantMenuRepository.saveAll(orderRestaurantMenuEntityList);
+
+        RestaurantCapacityEntity restaurantCapacityEntity = restaurantCapacityRepository.findByRestaurantId(restaurantId);
+        restaurantCapacityEntity.setCurrentCapacity(restaurantCapacityEntity.getCurrentCapacity() - capacity);
+        restaurantCapacityRepository.save(restaurantCapacityEntity);
+
     }
 }

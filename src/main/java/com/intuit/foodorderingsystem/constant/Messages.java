@@ -12,4 +12,5 @@ public class Messages {
     public static final String USER_NOT_EXIST = "User with this id does not exists";
 
     public static final String ORDER_NOT_CREATED = "Restaurants are busy please try after some time";
+    public static final String ORDER_NOT_EXIST = "Order with this id does not exist";
 }

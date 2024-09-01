@@ -1,12 +1,8 @@
 package com.intuit.foodorderingsystem.controller;
 
 
-import com.intuit.foodorderingsystem.model.request.CreateOrderRequest;
-import com.intuit.foodorderingsystem.model.request.CreateUserRequest;
-import com.intuit.foodorderingsystem.model.request.DeleteItemsMenuRequest;
-import com.intuit.foodorderingsystem.model.response.BaseResponseModel;
-import com.intuit.foodorderingsystem.model.response.CreateUserResponse;
-import com.intuit.foodorderingsystem.model.response.EmptyResponse;
+import com.intuit.foodorderingsystem.model.request.*;
+import com.intuit.foodorderingsystem.model.response.*;
 import com.intuit.foodorderingsystem.service.OrderService;
 import com.intuit.foodorderingsystem.service.UserService;
 import jakarta.validation.Valid;
@@ -28,8 +24,18 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping({"{userId}"})
-    BaseResponseModel<EmptyResponse> createOrder (@PathVariable Long userId, @RequestBody List<CreateOrderRequest> createOrderRequestList) {
+    BaseResponseModel<CreateOrderResponse> createOrder (@PathVariable Long userId, @RequestBody List<CreateOrderRequest> createOrderRequestList) {
         return new BaseResponseModel<>(orderService.createOrder(userId, createOrderRequestList));
+    }
+
+    @PutMapping("/mark-dispatched")
+    BaseResponseModel<EmptyResponse> markOrderDispatched (@RequestBody MarkDispatchOrderRequest markDispatchOrderRequest) {
+        return new BaseResponseModel<>(orderService.markOrderDispatched(markDispatchOrderRequest));
+    }
+
+    @GetMapping("/order-details")
+    BaseResponseModel<GetorderDetailsResponse> getOrderDetails(@RequestParam("orderId") Long orderId) {
+        return new BaseResponseModel<>(orderService.getOrderDetails(orderId));
     }
 
 

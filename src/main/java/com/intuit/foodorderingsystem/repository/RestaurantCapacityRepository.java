@@ -18,4 +18,8 @@ public interface RestaurantCapacityRepository extends JpaRepository<RestaurantCa
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @QueryHints({@QueryHint(name = "jakarta.persistence.lock.timeout", value="5000")})
     List<RestaurantCapacityEntity> findByRestaurantIdIn(List<Long> restaurantId);
+
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
+    @QueryHints({@QueryHint(name = "jakarta.persistence.lock.timeout", value="5000")})
+    RestaurantCapacityEntity findByRestaurantId(Long restaurantId);
 }
