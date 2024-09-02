@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Controller
 @RequestMapping("/menu")
 @Log4j2
 @RequiredArgsConstructor
 public class MenuController {
 
-    @Autowired
     private final MenuService menuService;
 
     @PostMapping
@@ -29,7 +27,7 @@ public class MenuController {
         return new BaseResponseModel<>(menuService.createMenu(createMenuRequest));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     BaseResponseModel<List<GetAllMenuResponse>> getAllMenu() {
         return new BaseResponseModel<>(menuService.getAllItems());
     }

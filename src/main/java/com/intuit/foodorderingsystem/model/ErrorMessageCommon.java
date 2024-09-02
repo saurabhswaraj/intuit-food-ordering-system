@@ -7,6 +7,6 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class ErrorMessageCommon extends ErrorMessage{
+public class ErrorMessageCommon implements ErrorMessage{
     private String message;
 }

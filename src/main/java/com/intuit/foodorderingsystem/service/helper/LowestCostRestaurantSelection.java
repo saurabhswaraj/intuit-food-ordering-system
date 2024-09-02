@@ -31,9 +31,7 @@ public class LowestCostRestaurantSelection implements RestaurantSelectionStrateg
             if(restaurantMenuEntity.getRestaurantEntity().getIsActive()) {
                 RestaurantCapacityEntity restaurantCapacityEntity = restaurantMenuEntity.getRestaurantEntity().getRestaurantCapacityEntity()
                         .stream()
-                        .filter(restaurantCapacity -> {
-                            return restaurantCapacity.getState() == State.ACTIVE;
-                        }).toList().get(0);
+                        .filter(restaurantCapacity -> restaurantCapacity.getState() == State.ACTIVE).toList().get(0);
 
                 Integer maxCapacity = restaurantCapacityEntity.getMaxCapacity();
                 Integer currentCapacity = restaurantCapacityEntity.getCurrentCapacity();

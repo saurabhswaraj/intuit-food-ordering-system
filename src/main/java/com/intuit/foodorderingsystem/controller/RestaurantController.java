@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Controller
 @RequestMapping("/restaurant")
 @Log4j2
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class RestaurantController {
         return new BaseResponseModel<>(restaurantService.createRestaurant(createRestaurantRequest));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     BaseResponseModel<List<GetRestaurantResponse>> getAllRestaurant () {
         return new BaseResponseModel<>(restaurantService.getAllRestaurants());
     }
@@ -43,7 +42,7 @@ public class RestaurantController {
         return new BaseResponseModel<>(restaurantService.editRestaurants(restaurantId, editRestaurantRequest));
     }
 
-    @PutMapping ("/deactivate/{restaurantId}")
+    @PatchMapping ("/deactivate/{restaurantId}")
     BaseResponseModel<EmptyResponse> deactivateRestaurant (@PathVariable Long restaurantId) {
         return new BaseResponseModel<>(restaurantService.deactivateRestaurants(restaurantId));
     }

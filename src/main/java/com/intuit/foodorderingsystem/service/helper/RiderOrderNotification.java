@@ -1,13 +1,10 @@
 package com.intuit.foodorderingsystem.service.helper;
 
-import com.intuit.foodorderingsystem.entity.OrderRestaurantMenuEntity;
-import com.intuit.foodorderingsystem.repository.OrdersRestaurantMenuRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

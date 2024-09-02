@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ErrorMessageValidation extends ErrorMessage {
+public class ErrorMessageValidation implements ErrorMessage {
 
     private List<ErrorFields> errorFieldsList;
 

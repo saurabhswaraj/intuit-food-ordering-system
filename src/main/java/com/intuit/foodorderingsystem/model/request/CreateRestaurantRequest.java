@@ -1,9 +1,11 @@
 package com.intuit.foodorderingsystem.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.intuit.foodorderingsystem.constant.Messages;
 import com.intuit.foodorderingsystem.constant.RegexConstants;
 import com.intuit.foodorderingsystem.enums.RestaurantType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Value;
@@ -11,18 +13,21 @@ import lombok.Value;
 @Value
 @Builder
 public class CreateRestaurantRequest {
-    @NotBlank
+    @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)
     String name;
-    @NotBlank
+    @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)
     String address;
-    @NotBlank
+    @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)
     String city;
-    @NotBlank
+    @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)
     String state;
-    @NotBlank
+    @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)
     String pinCode;
+    @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
     Integer maxOrderCapacity;
     @Pattern(regexp = RegexConstants.PHONE_NUMBER_REGEX)
     String contactNumber;
+
+    @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
     RestaurantType restaurantType;
 }

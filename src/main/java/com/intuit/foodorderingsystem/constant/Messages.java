@@ -13,4 +13,9 @@ public class Messages {
 
     public static final String ORDER_NOT_CREATED = "Restaurants are busy please try after some time";
     public static final String ORDER_NOT_EXIST = "Order with this id does not exist";
+
+    public static final String LIST_CAN_NOT_BE_EMPTY = "The list can not be empty";
+    public static final String VALUE_CAN_NOT_BE_NULL = "The value can not be null";
+    public static final String VALUE_CAN_NOT_BE_EMPTY = "The value can not be Empty";
+
 }

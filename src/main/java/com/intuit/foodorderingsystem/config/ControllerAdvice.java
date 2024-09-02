@@ -27,8 +27,7 @@ public class ControllerAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     BaseResponseModel alreadyExistException(Exception exception) {
         ErrorMessageCommon errorMessage = getErrorMessage(exception);
-        log.error(exception.toString());
-        log.error(errorMessage.getMessage());
+        log.error(errorMessage.getMessage(), exception);
         return new BaseResponseModel<>(errorMessage);
     }
 
@@ -36,8 +35,7 @@ public class ControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     BaseResponseModel validationErrorPhone(Exception exception) {
         ErrorMessageCommon errorMessage = getErrorMessage(exception);
-        log.error(exception.toString());
-        log.error(errorMessage.getMessage());
+        log.error(errorMessage.getMessage(), exception);
         return new BaseResponseModel<>(errorMessage);
     }
 
@@ -54,7 +52,7 @@ public class ControllerAdvice {
             errorFieldsList.add(new ErrorFields(fieldError.getField(), fieldError.getDefaultMessage()));
         }
 
-        log.error(exception.toString());
+        log.error("Validation Error Occurred", exception);
         return new BaseResponseModel<>(new ErrorMessageValidation(errorFieldsList));
     }
 
