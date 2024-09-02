@@ -20,8 +20,6 @@ import com.intuit.foodorderingsystem.repository.*;
 import com.intuit.foodorderingsystem.service.OrderService;
 import com.intuit.foodorderingsystem.service.helper.OrderDispatchedNotificationSubject;
 import com.intuit.foodorderingsystem.service.helper.OrderNotificationSubject;
-import com.intuit.foodorderingsystem.service.helper.RestaurantSelectionStrategyFactory;
-import com.intuit.foodorderingsystem.util.TransactionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -35,16 +33,12 @@ import java.util.*;
 public class OrderServiceImpl implements OrderService {
 
     private final UserRepository userRepository;
-    private final RestaurantMenuRepository restaurantMenuRepository;
-    private final RestaurantSelectionStrategyFactory restaurantSelectionStrategyFactory;
-    private final RestaurantCapacityRepository restaurantCapacityRepository;
     private final OrdersRestaurantMenuRepository ordersRestaurantMenuRepository;
     private final RestaurantRepository restaurantRepository;
     private final OrdersRepository ordersRepository;
     private final OrderNotificationSubject orderNotificationSubject;
     private final OrderDispatchedNotificationSubject orderDispatchedNotificationSubject;
-
-    private final TransactionUtil transactionUtil;
+    private final OrderTransactionService orderTransactionService;
 
     @Override
     public CreateOrderResponse createOrder(Long userId, List<CreateOrderRequest> createOrderRequestList) {
@@ -52,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
         if (!userExist(userId)) {
             throw new DoNotExistException(Messages.USER_NOT_EXIST);
         }
-        Long orderId = transactionUtil.processOrder(userId, createOrderRequestList);
+        Long orderId = orderTransactionService.processOrder(userId, createOrderRequestList);
 
         orderNotificationSubject.notifyObservers(orderId);
 
@@ -68,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
         if (!orderExist(markDispatchOrderRequest.getOrderId())) {
             throw new DoNotExistException(Messages.ORDER_NOT_EXIST);
         }
-        transactionUtil.markOrderDispatched(markDispatchOrderRequest.getOrderId(), markDispatchOrderRequest.getRestaurantId());
+        orderTransactionService.markOrderDispatched(markDispatchOrderRequest.getOrderId(), markDispatchOrderRequest.getRestaurantId());
 
         orderDispatchedNotificationSubject.notifyObservers(markDispatchOrderRequest.getOrderId());
 

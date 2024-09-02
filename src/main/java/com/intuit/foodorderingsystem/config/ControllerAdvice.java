@@ -56,6 +56,13 @@ public class ControllerAdvice {
         return new BaseResponseModel<>(new ErrorMessageValidation(errorFieldsList));
     }
 
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    BaseResponseModel genericException(Exception exception) {
+        log.error("Something went Wrong", exception);
+        return new BaseResponseModel<>("Something went wrong.");
+    }
+
 
     private ErrorMessageCommon getErrorMessage(Exception exception) {
         return ErrorMessageCommon.builder()

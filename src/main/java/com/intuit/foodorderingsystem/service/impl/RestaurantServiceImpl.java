@@ -18,7 +18,6 @@ import com.intuit.foodorderingsystem.model.response.GetRestaurantResponse;
 import com.intuit.foodorderingsystem.repository.RestaurantCapacityRepository;
 import com.intuit.foodorderingsystem.repository.RestaurantRepository;
 import com.intuit.foodorderingsystem.service.RestaurantService;
-import com.intuit.foodorderingsystem.util.TransactionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +32,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
     private final RestaurantCapacityRepository restaurantCapacityRepository;
-    private final TransactionUtil transactionUtil;
+    private final RestaurantTransactionService restaurantTransactionService;
 
     @Override
     public CreateRestaurantResponse createRestaurant(CreateRestaurantRequest createRestaurantRequest) {
@@ -42,7 +41,7 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new AlreadyExistException(Messages.RESTAURANT_ALREADY_EXIST);
         }
         RestaurantEntity restaurantEntity = RestaurantEntityBuilderFactory.build(createRestaurantRequest);
-        RestaurantCapacityEntity restaurantCapacityEntity = transactionUtil.saveRestaurantDetails(restaurantEntity, createRestaurantRequest);
+        RestaurantCapacityEntity restaurantCapacityEntity = restaurantTransactionService.saveRestaurantDetails(restaurantEntity, createRestaurantRequest);
         return CreateRestaurantResponseBuilderFactory.build(restaurantEntity, restaurantCapacityEntity);
     }
 
@@ -115,7 +114,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantEntity != null;
     }
 
-    protected RestaurantEntity getRestaurantEntity(Long restaurantId) {
+    private RestaurantEntity getRestaurantEntity(Long restaurantId) {
         return restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
     }
 

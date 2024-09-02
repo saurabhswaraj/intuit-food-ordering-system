@@ -1,34 +1,32 @@
-package com.intuit.foodorderingsystem.util;
+package com.intuit.foodorderingsystem.service.impl;
 
 import com.intuit.foodorderingsystem.builder.OrderRestaurantMenuEntityBuilderFactory;
 import com.intuit.foodorderingsystem.builder.OrdersEntityBuilderFactory;
-import com.intuit.foodorderingsystem.builder.RestaurantCapacityEntityBuilderFactory;
 import com.intuit.foodorderingsystem.constant.Messages;
 import com.intuit.foodorderingsystem.entity.*;
 import com.intuit.foodorderingsystem.enums.OrderStatus;
 import com.intuit.foodorderingsystem.exception.OrderCanNotBeCreatedException;
 import com.intuit.foodorderingsystem.model.request.CreateOrderRequest;
-import com.intuit.foodorderingsystem.model.request.CreateRestaurantRequest;
-import com.intuit.foodorderingsystem.repository.*;
+import com.intuit.foodorderingsystem.repository.OrdersRepository;
+import com.intuit.foodorderingsystem.repository.OrdersRestaurantMenuRepository;
+import com.intuit.foodorderingsystem.repository.RestaurantCapacityRepository;
+import com.intuit.foodorderingsystem.repository.RestaurantMenuRepository;
 import com.intuit.foodorderingsystem.service.helper.RestaurantSelectionStrategy;
 import com.intuit.foodorderingsystem.service.helper.RestaurantSelectionStrategyFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
-@Component
+
 @RequiredArgsConstructor
+@Service
 @Log4j2
-public class TransactionUtil {
-
-    private final RestaurantRepository restaurantRepository;
-
-    private final RestaurantCapacityRepository restaurantCapacityRepository;
+public class OrderTransactionService {
 
     private final RestaurantSelectionStrategyFactory restaurantSelectionStrategyFactory;
 
@@ -38,16 +36,7 @@ public class TransactionUtil {
 
     private final RestaurantMenuRepository restaurantMenuRepository;
 
-
-    @Transactional
-    public RestaurantCapacityEntity saveRestaurantDetails(RestaurantEntity restaurantEntity, CreateRestaurantRequest createRestaurantRequest) {
-        restaurantEntity = restaurantRepository.save(restaurantEntity);
-        log.info(restaurantEntity);
-        RestaurantCapacityEntity restaurantCapacityEntity = RestaurantCapacityEntityBuilderFactory.build(
-                createRestaurantRequest.getMaxOrderCapacity(), restaurantEntity.getId());
-        restaurantCapacityEntity = restaurantCapacityRepository.save(restaurantCapacityEntity);
-        return restaurantCapacityEntity;
-    }
+    private final RestaurantCapacityRepository restaurantCapacityRepository;
 
     @Transactional
     public long processOrder(Long userId, List<CreateOrderRequest> createOrderRequestList) {

@@ -146,7 +146,7 @@ public class MenuServiceImpl implements MenuService {
         return new EmptyResponse();
     }
 
-    public Boolean hasRepeatedItem(List<CreateItem> itemList) {
+    private Boolean hasRepeatedItem(List<CreateItem> itemList) {
         Set<String> itemsSet = new HashSet<>();
         for (CreateItem item: itemList) {
             if(itemsSet.contains(item.getName().toLowerCase())) {
@@ -158,7 +158,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
 
-    public Boolean checkIfAllItemsEligible(List<CreateItem> itemList, RestaurantType foodType) {
+    private Boolean checkIfAllItemsEligible(List<CreateItem> itemList, RestaurantType foodType) {
         if(RestaurantType.VEG == foodType) {
             boolean isNonVeg = itemList.stream().anyMatch(item -> item.getFoodType() != FoodType.VEG);
             return !isNonVeg;
@@ -166,7 +166,7 @@ public class MenuServiceImpl implements MenuService {
         return true;
     }
 
-    public void standardizeName(List<CreateItem> itemList) {
+    private void standardizeName(List<CreateItem> itemList) {
         for(CreateItem item : itemList) {
             item.setName(StringUtils.normalizeSpace(item.getName().toLowerCase()));
         }

@@ -39,6 +39,13 @@ public class OrderRestaurantMenuEntity {
     @JoinColumn(name = "restaurant_id", nullable = false, insertable = false, updatable = false)
     private RestaurantEntity restaurantEntity;
 
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name="restaurant_id", referencedColumnName="restaurant_id", insertable = false, updatable = false),
+            @JoinColumn(name="menu_id", referencedColumnName="menu_id", insertable = false, updatable = false)
+    })
+    private RestaurantMenuEntity restaurantMenuEntity;
+
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
