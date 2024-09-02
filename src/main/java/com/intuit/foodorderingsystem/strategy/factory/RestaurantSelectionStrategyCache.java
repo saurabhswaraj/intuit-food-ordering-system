@@ -1,4 +1,4 @@
-package com.intuit.foodorderingsystem.service.helper;
+package com.intuit.foodorderingsystem.strategy.factory;
 
 import com.intuit.foodorderingsystem.enums.State;
 import com.intuit.foodorderingsystem.repository.RestaurantStrategyRepository;

@@ -1,7 +1,7 @@
-package com.intuit.foodorderingsystem.service.helper;
+package com.intuit.foodorderingsystem.strategy.factory;
 
+import com.intuit.foodorderingsystem.strategy.RestaurantSelectionStrategy;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 

@@ -7,7 +7,6 @@ import com.intuit.foodorderingsystem.builder.RestaurantOrderDetailsBuilderFactor
 import com.intuit.foodorderingsystem.constant.Messages;
 import com.intuit.foodorderingsystem.entity.*;
 import com.intuit.foodorderingsystem.exception.DoNotExistException;
-import com.intuit.foodorderingsystem.exception.OrderCanNotBeCreatedException;
 import com.intuit.foodorderingsystem.model.dto.ItemOrderDetails;
 import com.intuit.foodorderingsystem.model.dto.RestaurantOrderDetails;
 import com.intuit.foodorderingsystem.model.request.CreateOrderRequest;
@@ -18,8 +17,8 @@ import com.intuit.foodorderingsystem.model.response.EmptyResponse;
 import com.intuit.foodorderingsystem.model.response.GetorderDetailsResponse;
 import com.intuit.foodorderingsystem.repository.*;
 import com.intuit.foodorderingsystem.service.OrderService;
-import com.intuit.foodorderingsystem.service.helper.OrderDispatchedNotificationSubject;
-import com.intuit.foodorderingsystem.service.helper.OrderNotificationSubject;
+import com.intuit.foodorderingsystem.observer.OrderDispatchedNotificationSubject;
+import com.intuit.foodorderingsystem.observer.OrderNotificationSubject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

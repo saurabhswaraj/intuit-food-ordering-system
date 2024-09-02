@@ -1,6 +1,8 @@
-package com.intuit.foodorderingsystem.service.helper;
+package com.intuit.foodorderingsystem.observer.impl;
 
 import com.intuit.foodorderingsystem.entity.OrderRestaurantMenuEntity;
+import com.intuit.foodorderingsystem.observer.OrderNotificationObserver;
+import com.intuit.foodorderingsystem.observer.OrderNotificationSubject;
 import com.intuit.foodorderingsystem.repository.OrdersRestaurantMenuRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class RestaurantOrderNotification implements OrderNotificationObserver{
+public class RestaurantOrderNotification implements OrderNotificationObserver {
 
     private final OrdersRestaurantMenuRepository ordersRestaurantMenuRepository;
     private final OrderNotificationSubject orderNotificationSubject;

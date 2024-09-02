@@ -1,4 +1,4 @@
-package com.intuit.foodorderingsystem.service.helper;
+package com.intuit.foodorderingsystem.observer;
 
 public interface OrderNotificationSubject {
     void addObserver(OrderNotificationObserver observer);

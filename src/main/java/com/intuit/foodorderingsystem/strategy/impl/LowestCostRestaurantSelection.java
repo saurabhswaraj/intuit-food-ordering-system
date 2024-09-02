@@ -1,10 +1,11 @@
-package com.intuit.foodorderingsystem.service.helper;
+package com.intuit.foodorderingsystem.strategy.impl;
 
 import com.intuit.foodorderingsystem.entity.RestaurantCapacityEntity;
 import com.intuit.foodorderingsystem.entity.RestaurantEntity;
 import com.intuit.foodorderingsystem.entity.RestaurantMenuEntity;
 import com.intuit.foodorderingsystem.enums.State;
 import com.intuit.foodorderingsystem.repository.RestaurantMenuRepository;
+import com.intuit.foodorderingsystem.strategy.RestaurantSelectionStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @Service("LowestCostRestaurantSelection")
 @Log4j2
 @RequiredArgsConstructor
-public class LowestCostRestaurantSelection implements RestaurantSelectionStrategy{
+public class LowestCostRestaurantSelection implements RestaurantSelectionStrategy {
 
     private final RestaurantMenuRepository restaurantMenuRepository;
 

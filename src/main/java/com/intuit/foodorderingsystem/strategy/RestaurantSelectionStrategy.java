@@ -1,4 +1,4 @@
-package com.intuit.foodorderingsystem.service.helper;
+package com.intuit.foodorderingsystem.strategy;
 
 import com.intuit.foodorderingsystem.entity.RestaurantEntity;
 
