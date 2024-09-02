@@ -12,7 +12,7 @@ public class ItemBuilderFactory {
             .menuId(restaurantMenuEntity.getMenuId())
             .price(restaurantMenuEntity.getPrice())
             .rating(restaurantMenuEntity.getRating())
-                .itemState(restaurantMenuEntity.getItemState())
+            .itemState(restaurantMenuEntity.getItemState())
             .build();
     }
 }
