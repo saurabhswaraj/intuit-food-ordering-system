@@ -15,9 +15,6 @@ import java.util.List;
 @Builder
 public class CreateMenuRequest {
 
-    @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
-    Long restaurantId;
-
     @NotEmpty(message = Messages.LIST_CAN_NOT_BE_EMPTY)
     List<CreateItem> itemList;
 }

@@ -8,9 +8,9 @@ import java.util.List;
 
 public class CreateMenuResponseBuilderFactory {
 
-    public static CreateMenuResponse build (CreateMenuRequest createMenuRequests) {
+    public static CreateMenuResponse build (CreateMenuRequest createMenuRequests, Long restaurantId) {
         return CreateMenuResponse.builder()
-                .restaurantId(createMenuRequests.getRestaurantId())
+                .restaurantId(restaurantId)
                 .itemList(createMenuRequests.getItemList())
                 .build();
     }

@@ -22,9 +22,9 @@ public class MenuController {
 
     private final MenuService menuService;
 
-    @PostMapping
-    BaseResponseModel<CreateMenuResponse> createMenu (@Valid @RequestBody CreateMenuRequest createMenuRequest) {
-        return new BaseResponseModel<>(menuService.createMenu(createMenuRequest));
+    @PostMapping({"{restaurantId}"})
+    BaseResponseModel<CreateMenuResponse> createMenu (@PathVariable Long restaurantId, @Valid @RequestBody CreateMenuRequest createMenuRequest) {
+        return new BaseResponseModel<>(menuService.createMenu(restaurantId, createMenuRequest));
     }
 
     @GetMapping("/all")

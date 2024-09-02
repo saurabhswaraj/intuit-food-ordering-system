@@ -41,8 +41,8 @@ public class MenuServiceImpl implements MenuService {
     private final RestaurantMenuRepository restaurantMenuRepository;
 
     @Override
-    public CreateMenuResponse createMenu(CreateMenuRequest createMenuRequest) {
-        RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(createMenuRequest.getRestaurantId());
+    public CreateMenuResponse createMenu(Long restaurantId, CreateMenuRequest createMenuRequest) {
+        RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
         if(restaurantEntity == null ) {
             throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
         }
@@ -77,11 +77,11 @@ public class MenuServiceImpl implements MenuService {
         }
 
         List<RestaurantMenuEntity> restaurantMenuEntities = itemListFromRequest.stream().map(item ->
-            RestaurantMenuEntityBuilderFactory.build(itemNameMenuIdMap, createMenuRequest.getRestaurantId(), item)).toList();
+            RestaurantMenuEntityBuilderFactory.build(itemNameMenuIdMap, restaurantId, item)).toList();
 
         restaurantMenuRepository.saveAll(restaurantMenuEntities);
 
-        return CreateMenuResponseBuilderFactory.build(createMenuRequest);
+        return CreateMenuResponseBuilderFactory.build(createMenuRequest, restaurantId);
     }
 
     @Override

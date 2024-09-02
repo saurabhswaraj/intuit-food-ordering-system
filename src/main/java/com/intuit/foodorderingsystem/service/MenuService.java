@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface MenuService {
 
-    CreateMenuResponse createMenu (CreateMenuRequest createMenuRequest);
+    CreateMenuResponse createMenu (Long restaurantId, CreateMenuRequest createMenuRequest);
 
     List<GetAllMenuResponse> getAllItems();
 
