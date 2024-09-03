@@ -14,3 +14,7 @@ logging:
   level:
     org.springframework.web: DEBUG
 
+jwt:
+  token:
+    sign-key: Zm9vZC1vcmRlcmluZy1zeXN0ZW0=
+

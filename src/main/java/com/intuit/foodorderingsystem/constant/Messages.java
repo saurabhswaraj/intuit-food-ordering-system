@@ -18,4 +18,6 @@ public class Messages {
     public static final String VALUE_CAN_NOT_BE_NULL = "The value can not be null";
     public static final String VALUE_CAN_NOT_BE_EMPTY = "The value can not be Empty";
 
+    public static final String PASSWORD_MATCH_ERROR = "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character";
+
 }

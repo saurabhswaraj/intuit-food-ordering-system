@@ -23,4 +23,6 @@ public class CreateUserRequest {
     String pinCode;
     @Pattern(regexp = RegexConstants.PHONE_NUMBER_REGEX)
     String contactNumber;
+    @Pattern(regexp = RegexConstants.PASSWORD_REGEX, message = Messages.PASSWORD_MATCH_ERROR)
+    String password;
 }

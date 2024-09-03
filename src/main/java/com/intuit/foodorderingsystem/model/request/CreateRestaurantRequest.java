@@ -30,4 +30,7 @@ public class CreateRestaurantRequest {
 
     @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
     RestaurantType restaurantType;
+
+    @Pattern(regexp = RegexConstants.PASSWORD_REGEX, message = Messages.PASSWORD_MATCH_ERROR)
+    String password;
 }

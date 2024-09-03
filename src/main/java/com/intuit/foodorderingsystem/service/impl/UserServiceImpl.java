@@ -21,14 +21,14 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserTransactionService userTransactionService;
 
     @Override
     public CreateUserResponse createUser(CreateUserRequest createUserRequest) {
         if(userExist(createUserRequest.getContactNumber())) {
             throw new DoNotExistException(Messages.USER_ALREADY_EXIST);
         }
-        UsersEntity usersEntity = UsersEntityBuilderFactory.build(createUserRequest);
-        usersEntity = userRepository.save(usersEntity);
+        UsersEntity usersEntity = userTransactionService.createUser(createUserRequest);
 
         return CreateUserResponseBuilderFactory.build(usersEntity);
     }
