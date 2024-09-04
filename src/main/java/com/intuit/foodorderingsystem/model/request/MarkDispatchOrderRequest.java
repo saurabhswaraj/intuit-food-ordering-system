@@ -2,10 +2,11 @@ package com.intuit.foodorderingsystem.model.request;
 
 import com.intuit.foodorderingsystem.constant.Messages;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class MarkDispatchOrderRequest {
     @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)

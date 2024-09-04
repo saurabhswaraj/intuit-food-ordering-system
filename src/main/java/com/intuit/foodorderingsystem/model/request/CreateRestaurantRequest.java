@@ -7,10 +7,11 @@ import com.intuit.foodorderingsystem.enums.RestaurantType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class CreateRestaurantRequest {
     @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)

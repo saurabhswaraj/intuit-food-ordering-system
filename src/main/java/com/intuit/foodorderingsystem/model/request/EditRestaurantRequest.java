@@ -1,10 +1,11 @@
 package com.intuit.foodorderingsystem.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class EditRestaurantRequest {
     String name;

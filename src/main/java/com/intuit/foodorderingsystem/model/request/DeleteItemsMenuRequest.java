@@ -6,8 +6,10 @@ import lombok.*;
 
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Value
 public class DeleteItemsMenuRequest {
     @NotEmpty(message = Messages.LIST_CAN_NOT_BE_EMPTY)
     List<Long> itemListToDelete;

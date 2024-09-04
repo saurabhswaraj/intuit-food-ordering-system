@@ -2,7 +2,6 @@ package com.intuit.foodorderingsystem.config;
 
 import com.intuit.foodorderingsystem.exception.*;
 import com.intuit.foodorderingsystem.model.ErrorFields;
-import com.intuit.foodorderingsystem.model.ErrorMessage;
 import com.intuit.foodorderingsystem.model.ErrorMessageCommon;
 import com.intuit.foodorderingsystem.model.ErrorMessageValidation;
 import com.intuit.foodorderingsystem.model.response.BaseResponseModel;
@@ -60,7 +59,7 @@ public class ControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     BaseResponseModel genericException(Exception exception) {
         log.error("Something went Wrong", exception);
-        return new BaseResponseModel<>("Something went wrong.");
+        return new BaseResponseModel<>(getErrorMessage(exception));
     }
 
 
