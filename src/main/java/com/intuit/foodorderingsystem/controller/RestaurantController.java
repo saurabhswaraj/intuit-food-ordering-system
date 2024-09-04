@@ -1,6 +1,9 @@
 package com.intuit.foodorderingsystem.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intuit.foodorderingsystem.model.request.CreateRestaurantRequest;
 import com.intuit.foodorderingsystem.model.request.EditRestaurantRequest;
 import com.intuit.foodorderingsystem.model.response.*;
@@ -38,7 +41,10 @@ public class RestaurantController {
 
     @PatchMapping ("{restaurantId}")
     BaseResponseModel<EditRestaurantResponse> editRestaurant (@PathVariable Long restaurantId,
-                                                              @RequestBody EditRestaurantRequest editRestaurantRequest) {
+                                                              @Valid @RequestBody String editRestaurantRequestString) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        EditRestaurantRequest editRestaurantRequest = objectMapper.readValue(editRestaurantRequestString, EditRestaurantRequest.class);
         return new BaseResponseModel<>(restaurantService.editRestaurants(restaurantId, editRestaurantRequest));
     }
 

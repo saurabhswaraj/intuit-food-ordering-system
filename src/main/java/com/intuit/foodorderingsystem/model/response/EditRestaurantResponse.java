@@ -13,7 +13,7 @@ public class EditRestaurantResponse {
     String city;
     String state;
     String pinCode;
-    Integer maxOrderCapacity;
     String contactNumber;
+    Integer restaurantCapacity;
     RestaurantType restaurantType;
 }

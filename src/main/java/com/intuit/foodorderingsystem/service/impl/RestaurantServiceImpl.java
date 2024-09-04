@@ -94,8 +94,10 @@ public class RestaurantServiceImpl implements RestaurantService {
             }
             restaurantEntity.setContactNumber(editRestaurantRequest.getContactNumber());
         }
+        Integer restaurantCapacity = restaurantEntity.getRestaurantCapacityEntity().stream()
+                .filter(restaurantCapacityEntity -> restaurantCapacityEntity.getState() == State.ACTIVE).toList().get(0).getMaxCapacity();
         restaurantEntity = restaurantRepository.save(restaurantEntity);
-        return EditRestaurantResponseBuilderFactory.build(restaurantEntity);
+        return EditRestaurantResponseBuilderFactory.build(restaurantEntity, restaurantCapacity);
     }
 
     @Override

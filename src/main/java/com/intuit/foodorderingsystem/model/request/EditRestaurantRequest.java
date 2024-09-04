@@ -13,6 +13,5 @@ public class EditRestaurantRequest {
     String city;
     String state;
     String pinCode;
-    Integer maxOrderCapacity;
     String contactNumber;
 }

@@ -36,7 +36,7 @@ Implement an online food ordering system the details of
 Assumptions
 > If contact number is same then restaurant is duplicate
 
->If restaurant has to increase the order capacity they have to get approval from cms.
+>If restaurant has to increase the order capacity they have to get approval from cms this is not implemented yet but in database schema it is considered
 
 > Restaurants can also disable themselves. After disabling they will not be visible anywhere
 

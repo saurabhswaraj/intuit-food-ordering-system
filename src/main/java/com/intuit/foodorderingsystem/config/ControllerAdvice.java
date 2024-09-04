@@ -1,5 +1,6 @@
 package com.intuit.foodorderingsystem.config;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.intuit.foodorderingsystem.exception.*;
 import com.intuit.foodorderingsystem.model.ErrorFields;
 import com.intuit.foodorderingsystem.model.ErrorMessageCommon;
@@ -38,6 +39,14 @@ public class ControllerAdvice {
         return new BaseResponseModel<>(errorMessage);
     }
 
+    @ExceptionHandler({JsonProcessingException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    BaseResponseModel jsonBadRequest(Exception exception) {
+        ErrorMessageCommon errorMessage = ErrorMessageCommon.builder().message("Unknown properties exist in the request").build();
+        log.error(errorMessage.getMessage(), exception);
+        return new BaseResponseModel<>(errorMessage);
+    }
+
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -54,6 +63,8 @@ public class ControllerAdvice {
         log.error("Validation Error Occurred", exception);
         return new BaseResponseModel<>(new ErrorMessageValidation(errorFieldsList));
     }
+
+
 
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

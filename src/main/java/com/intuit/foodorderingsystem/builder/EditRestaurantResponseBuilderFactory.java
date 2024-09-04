@@ -8,7 +8,7 @@ import com.intuit.foodorderingsystem.model.response.EditRestaurantResponse;
 
 public class EditRestaurantResponseBuilderFactory {
 
-    public static EditRestaurantResponse build (RestaurantEntity restaurantEntity) {
+    public static EditRestaurantResponse build (RestaurantEntity restaurantEntity, Integer restaurantCapacity) {
         return EditRestaurantResponse.builder()
                 .id(restaurantEntity.getId())
                 .name(restaurantEntity.getName())
@@ -18,6 +18,7 @@ public class EditRestaurantResponseBuilderFactory {
                 .pinCode(restaurantEntity.getPinCode())
                 .contactNumber(restaurantEntity.getContactNumber())
                 .restaurantType(restaurantEntity.getRestaurantType())
+                .restaurantCapacity(restaurantCapacity)
                 .build();
     }
 }
