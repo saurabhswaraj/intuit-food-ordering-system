@@ -22,6 +22,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 
@@ -171,9 +175,10 @@ public class MenuServiceImplTest {
     void getAllItems_Success() {
         MenuEntity menuEntity1 = new MenuEntity(2L, "item2 space", FoodType.VEG, null);
         MenuEntity menuEntity2 = new MenuEntity(3L, "item1", FoodType.VEG, null);
-        when(menuRepository.findAll()).thenReturn(Arrays.asList(menuEntity1, menuEntity2));
+        Page<MenuEntity> menuEntityPage = new PageImpl<>(Arrays.asList(menuEntity1, menuEntity2));
+        when(menuRepository.findAll((Pageable)any())).thenReturn(menuEntityPage);
 
-        List<GetAllMenuResponse> getAllMenuResponses = menuService.getAllItems();
+        List<GetAllMenuResponse> getAllMenuResponses = menuService.getAllItems(0, 5);
 
         List<GetAllMenuResponse> getAllMenuResponseList = Arrays.asList(
                 GetAllMenuResponse.builder()

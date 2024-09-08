@@ -21,6 +21,8 @@ import com.intuit.foodorderingsystem.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,8 +48,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<GetRestaurantResponse> getAllRestaurants() {
-        List<RestaurantEntity> restaurantEntities = restaurantRepository.findAllByIsActiveTrue();
+    public List<GetRestaurantResponse> getAllRestaurants(Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        List<RestaurantEntity> restaurantEntities = restaurantRepository.findAllByIsActiveTrue(pageRequest);
         return restaurantEntities.stream()
                 .map(restaurantEntity -> GetRestaurantResponseBuilderFactory.build(restaurantEntity,
                         restaurantEntity.getRestaurantCapacityEntity().stream()

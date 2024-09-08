@@ -26,6 +26,8 @@ import com.intuit.foodorderingsystem.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -85,8 +87,9 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<GetAllMenuResponse> getAllItems() {
-        List<MenuEntity> menuEntityList = menuRepository.findAll();
+    public List<GetAllMenuResponse> getAllItems(Integer pageNo, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+        Page<MenuEntity> menuEntityList = menuRepository.findAll(pageRequest);
         return menuEntityList.stream().map(GetAllMenuResponseBuilderFactory::build).toList();
     }
 

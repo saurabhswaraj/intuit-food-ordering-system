@@ -12,7 +12,7 @@ public interface MenuService {
 
     CreateMenuResponse createMenu (Long restaurantId, CreateMenuRequest createMenuRequest);
 
-    List<GetAllMenuResponse> getAllItems();
+    List<GetAllMenuResponse> getAllItems(Integer pageNo, Integer pageSize);
 
     GetRestaurantMenuResponse getRestaurantMenu (Long restaurantId);
 

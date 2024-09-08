@@ -28,8 +28,9 @@ public class MenuController {
     }
 
     @GetMapping("/all")
-    BaseResponseModel<List<GetAllMenuResponse>> getAllMenu() {
-        return new BaseResponseModel<>(menuService.getAllItems());
+    BaseResponseModel<List<GetAllMenuResponse>> getAllMenu(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                           @RequestParam(defaultValue = "10") Integer pageSize) {
+        return new BaseResponseModel<>(menuService.getAllItems(pageNo, pageSize));
     }
 
     @GetMapping({"{restaurantId}"})

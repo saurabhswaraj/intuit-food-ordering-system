@@ -14,7 +14,7 @@ public interface RestaurantService {
 
     CreateRestaurantResponse createRestaurant(CreateRestaurantRequest createRestaurantRequest);
 
-    List<GetRestaurantResponse> getAllRestaurants ();
+    List<GetRestaurantResponse> getAllRestaurants (Integer pageNumber, Integer pageSize);
 
     GetRestaurantResponse getSingleRestaurant(Long restaurantId);
 

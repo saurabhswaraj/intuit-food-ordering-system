@@ -11,6 +11,7 @@ import com.intuit.foodorderingsystem.service.RestaurantService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,9 @@ public class RestaurantController {
     }
 
     @GetMapping("/all")
-    BaseResponseModel<List<GetRestaurantResponse>> getAllRestaurant () {
-        return new BaseResponseModel<>(restaurantService.getAllRestaurants());
+    BaseResponseModel<List<GetRestaurantResponse>> getAllRestaurant (@RequestParam(defaultValue = "0") Integer pageNo,
+                                                                     @RequestParam(defaultValue = "10") Integer pageSize) {
+        return new BaseResponseModel<>(restaurantService.getAllRestaurants(pageNo, pageSize));
     }
 
     @GetMapping("{restaurantId}")
