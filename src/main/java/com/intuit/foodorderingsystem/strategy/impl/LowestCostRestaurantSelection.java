@@ -3,6 +3,7 @@ package com.intuit.foodorderingsystem.strategy.impl;
 import com.intuit.foodorderingsystem.entity.RestaurantCapacityEntity;
 import com.intuit.foodorderingsystem.entity.RestaurantEntity;
 import com.intuit.foodorderingsystem.entity.RestaurantMenuEntity;
+import com.intuit.foodorderingsystem.enums.ItemState;
 import com.intuit.foodorderingsystem.enums.State;
 import com.intuit.foodorderingsystem.repository.RestaurantMenuRepository;
 import com.intuit.foodorderingsystem.strategy.RestaurantSelectionStrategy;
@@ -27,7 +28,7 @@ public class LowestCostRestaurantSelection implements RestaurantSelectionStrateg
         log.info("Selected LowestCostRestaurantSelection for menuId :"+menuId);
         Integer quantityBackup = quantity;
         List<RestaurantEntity> restaurantEntityList = new LinkedList<>();
-        List<RestaurantMenuEntity> restaurantMenuEntityList = restaurantMenuRepository.findAllByMenuIdOrderByPrice(menuId);
+        List<RestaurantMenuEntity> restaurantMenuEntityList = restaurantMenuRepository.findAllByMenuIdAnAndItemStateOrderByPrice(menuId, ItemState.IN_STOCK);
         for(RestaurantMenuEntity restaurantMenuEntity : restaurantMenuEntityList) {
             if(restaurantMenuEntity.getRestaurantEntity().getIsActive()) {
                 RestaurantCapacityEntity restaurantCapacityEntity = restaurantMenuEntity.getRestaurantEntity().getRestaurantCapacityEntity()

@@ -3,6 +3,7 @@ package com.intuit.foodorderingsystem.repository;
 import com.intuit.foodorderingsystem.entity.MenuEntity;
 import com.intuit.foodorderingsystem.entity.RestaurantMenuCompositeKey;
 import com.intuit.foodorderingsystem.entity.RestaurantMenuEntity;
+import com.intuit.foodorderingsystem.enums.ItemState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,6 @@ public interface RestaurantMenuRepository extends JpaRepository<RestaurantMenuEn
 
     RestaurantMenuEntity findByRestaurantIdAndMenuId(Long restaurantId, Long menuId);
 
-    List<RestaurantMenuEntity> findAllByMenuIdOrderByPrice(Long menuId);
+    List<RestaurantMenuEntity> findAllByMenuIdAnAndItemStateOrderByPrice(Long menuId, ItemState itemState);
 
 }

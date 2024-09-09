@@ -41,20 +41,25 @@ public class OrderTransactionService {
     @Transactional
     public long processOrder(Long userId, List<CreateOrderRequest> createOrderRequestList) {
 
+        //create Order
         OrdersEntity ordersEntity = OrdersEntityBuilderFactory.build(userId);
         ordersEntity = ordersRepository.save(ordersEntity);
 
+        //get Strategy
         RestaurantSelectionStrategy restaurantSelectionStrategy = restaurantSelectionStrategyFactory.getObject();
         for(CreateOrderRequest createOrderRequest : createOrderRequestList) {
+            //get restaurant list for each product
             List<RestaurantEntity> restaurantEntities = restaurantSelectionStrategy.select(createOrderRequest.getMenuId(), createOrderRequest.getQuantity());
             if(restaurantEntities == null) {
                 throw new OrderCanNotBeCreatedException(Messages.ORDER_NOT_CREATED);
             }
 
             //after (SELECT IN) query the order will be different than restaurantEntities but we need same order
+            //Lock the restaurant_capacity table row
             List<RestaurantCapacityEntity> restaurantCapacityEntities = restaurantCapacityRepository
                     .findByRestaurantIdIn(restaurantEntities.stream().map(RestaurantEntity::getId).toList());
 
+            //Sort the restaurant according to height strategy
             List<RestaurantCapacityEntity> orderedRestaurantCapacityEntities = new LinkedList<>();
             for(RestaurantEntity restaurantEntity : restaurantEntities) {
                 log.info("Selected " + restaurantEntity.getName() + " no " + restaurantEntity.getId());
@@ -66,7 +71,11 @@ public class OrderTransactionService {
                 }
             }
 
+            //The Strategy will return list only if capacity is full for a restaurant
+
             Integer quantity = createOrderRequest.getQuantity();
+
+            //Assigning Orders to Restaurants
             for(RestaurantCapacityEntity restaurantCapacityEntity : orderedRestaurantCapacityEntities) {
 
                 RestaurantMenuEntity restaurantMenuEntity = restaurantMenuRepository.findByRestaurantIdAndMenuId(restaurantCapacityEntity.getRestaurantId(), createOrderRequest.getMenuId());
