@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public EmptyResponse markOrderDispatched(MarkDispatchOrderRequest markDispatchOrderRequest) {
         if (!restaurantExist(markDispatchOrderRequest.getRestaurantId())) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
         }
 
         if (!orderExist(markDispatchOrderRequest.getOrderId())) {

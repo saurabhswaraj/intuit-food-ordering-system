@@ -46,7 +46,7 @@ public class MenuServiceImpl implements MenuService {
     public CreateMenuResponse createMenu(Long restaurantId, CreateMenuRequest createMenuRequest) {
         RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
         if(restaurantEntity == null ) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
         }
 
         standardizeName(createMenuRequest.getItemList());
@@ -97,7 +97,7 @@ public class MenuServiceImpl implements MenuService {
     public GetRestaurantMenuResponse getRestaurantMenu(Long restaurantId) {
         RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
         if(restaurantEntity == null ) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
         }
 
         return GetRestaurantMenuResponseBuilderFactory.build(restaurantId, restaurantEntity);
@@ -107,7 +107,7 @@ public class MenuServiceImpl implements MenuService {
     public EmptyResponse deleteItemFromMenu(Long restaurantId, DeleteItemsMenuRequest deleteItemsMenuRequest) {
         RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
         if(restaurantEntity == null ) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
         }
 
         List<RestaurantMenuEntity> restaurantMenuEntities = restaurantMenuRepository
@@ -121,7 +121,7 @@ public class MenuServiceImpl implements MenuService {
     public EmptyResponse outOfStockItemFromMenu(Long restaurantId, ChangeItemsStateMenuRequest changeItemsStateMenuRequest) {
         RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
         if(restaurantEntity == null ) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
         }
 
         List<RestaurantMenuEntity> restaurantMenuEntities = restaurantMenuRepository
@@ -137,7 +137,7 @@ public class MenuServiceImpl implements MenuService {
     public EmptyResponse inStockItemFromMenu(Long restaurantId, ChangeItemsStateMenuRequest changeItemsStateMenuRequest) {
         RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
         if(restaurantEntity == null ) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
         }
 
         List<RestaurantMenuEntity> restaurantMenuEntities = restaurantMenuRepository

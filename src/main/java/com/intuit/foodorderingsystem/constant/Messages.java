@@ -2,7 +2,8 @@ package com.intuit.foodorderingsystem.constant;
 
 public class Messages {
 
-    public static final String RESTAURANT_NOT_EXIST = "Restaurant with this id does not exist or is disabled";
+    public static final String RESTAURANT_NOT_EXIST_OR_DISABLED = "Restaurant with this id does not exist or is disabled";
+    public static final String RESTAURANT_NOT_EXIST = "Restaurant with this id does not exist";
     public static final String RESTAURANT_ALREADY_EXIST = "Restaurant already Exist";
     public static final String PHONE_NUMBER_CHECK = "Please check the phone number";
     public static final String ALL_ITEMS_NOT_VEG = "All items in the menu is not veg for veg restaurant";

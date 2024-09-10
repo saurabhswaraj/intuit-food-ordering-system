@@ -22,10 +22,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -62,7 +62,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public GetRestaurantResponse getSingleRestaurant(Long restaurantId) {
         RestaurantEntity restaurantEntity = getRestaurantEntity(restaurantId);
         if(restaurantEntity == null) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
         }
         return GetRestaurantResponseBuilderFactory.build(restaurantEntity,
                         restaurantEntity.getRestaurantCapacityEntity().stream()
@@ -74,7 +74,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public EditRestaurantResponse editRestaurants(Long restaurantId, EditRestaurantRequest editRestaurantRequest) {
         RestaurantEntity restaurantEntity = getRestaurantEntity(restaurantId);
         if(restaurantEntity == null) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
         }
         if (!StringUtils.isAllBlank(editRestaurantRequest.getName())) {
             restaurantEntity.setName(editRestaurantRequest.getName());
@@ -95,6 +95,10 @@ public class RestaurantServiceImpl implements RestaurantService {
             if(!editRestaurantRequest.getContactNumber().matches(RegexConstants.PHONE_NUMBER_REGEX)) {
                 throw new PhoneNumberNotValidException(Messages.PHONE_NUMBER_CHECK);
             }
+            if (restaurantRepository.findByContactNumberAndIsActiveTrue(editRestaurantRequest.getContactNumber()) != null
+             && !editRestaurantRequest.getContactNumber().equals(restaurantEntity.getContactNumber())) {
+                throw new AlreadyExistException("This contact number is already registered");
+            }
             restaurantEntity.setContactNumber(editRestaurantRequest.getContactNumber());
         }
         Integer restaurantCapacity = restaurantEntity.getRestaurantCapacityEntity().stream()
@@ -107,9 +111,21 @@ public class RestaurantServiceImpl implements RestaurantService {
     public EmptyResponse deactivateRestaurants(Long restaurantId) {
         RestaurantEntity restaurantEntity = getRestaurantEntity(restaurantId);
         if(restaurantEntity == null) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
         }
         restaurantEntity.setIsActive(false);
+        restaurantRepository.save(restaurantEntity);
+        return new EmptyResponse();
+    }
+
+    @Override
+    public EmptyResponse activateRestaurants(Long restaurantId) {
+        Optional<RestaurantEntity> restaurantEntityOptional = restaurantRepository.findById(restaurantId);
+        if(restaurantEntityOptional.isEmpty()) {
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST);
+        }
+        RestaurantEntity restaurantEntity = restaurantEntityOptional.get();
+        restaurantEntity.setIsActive(true);
         restaurantRepository.save(restaurantEntity);
         return new EmptyResponse();
     }

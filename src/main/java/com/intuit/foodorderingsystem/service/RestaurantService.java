@@ -21,4 +21,6 @@ public interface RestaurantService {
     EditRestaurantResponse editRestaurants(Long restaurantId, EditRestaurantRequest editRestaurantRequest);
 
     EmptyResponse deactivateRestaurants(Long restaurantId);
+
+    EmptyResponse activateRestaurants(Long restaurantId);
 }

@@ -13,4 +13,5 @@ public interface RestaurantRepository extends PagingAndSortingRepository<Restaur
     RestaurantEntity findByContactNumber(String contactNumber);
     List<RestaurantEntity> findAllByIsActiveTrue(Pageable pageable);
     RestaurantEntity findByIdAndIsActiveTrue(Long id);
+    RestaurantEntity findByContactNumberAndIsActiveTrue(String contactNumber);
 }

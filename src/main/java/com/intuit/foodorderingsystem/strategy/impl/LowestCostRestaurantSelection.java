@@ -28,7 +28,7 @@ public class LowestCostRestaurantSelection implements RestaurantSelectionStrateg
         log.info("Selected LowestCostRestaurantSelection for menuId :"+menuId);
         Integer quantityBackup = quantity;
         List<RestaurantEntity> restaurantEntityList = new LinkedList<>();
-        List<RestaurantMenuEntity> restaurantMenuEntityList = restaurantMenuRepository.findAllByMenuIdAnAndItemStateOrderByPrice(menuId, ItemState.IN_STOCK);
+        List<RestaurantMenuEntity> restaurantMenuEntityList = restaurantMenuRepository.findAllByMenuIdAndItemStateOrderByPrice(menuId, ItemState.IN_STOCK);
         for(RestaurantMenuEntity restaurantMenuEntity : restaurantMenuEntityList) {
             if(restaurantMenuEntity.getRestaurantEntity().getIsActive()) {
                 RestaurantCapacityEntity restaurantCapacityEntity = restaurantMenuEntity.getRestaurantEntity().getRestaurantCapacityEntity()

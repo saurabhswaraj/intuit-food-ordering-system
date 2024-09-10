@@ -54,4 +54,9 @@ public class RestaurantController {
     BaseResponseModel<EmptyResponse> deactivateRestaurant (@PathVariable Long restaurantId) {
         return new BaseResponseModel<>(restaurantService.deactivateRestaurants(restaurantId));
     }
+
+    @PatchMapping ("/activate/{restaurantId}")
+    BaseResponseModel<EmptyResponse> activateRestaurant (@PathVariable Long restaurantId) {
+        return new BaseResponseModel<>(restaurantService.activateRestaurants(restaurantId));
+    }
 }

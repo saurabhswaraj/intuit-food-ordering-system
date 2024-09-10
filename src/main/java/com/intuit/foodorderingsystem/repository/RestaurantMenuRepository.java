@@ -18,6 +18,6 @@ public interface RestaurantMenuRepository extends JpaRepository<RestaurantMenuEn
 
     RestaurantMenuEntity findByRestaurantIdAndMenuId(Long restaurantId, Long menuId);
 
-    List<RestaurantMenuEntity> findAllByMenuIdAnAndItemStateOrderByPrice(Long menuId, ItemState itemState);
+    List<RestaurantMenuEntity> findAllByMenuIdAndItemStateOrderByPrice(Long menuId, ItemState itemState);
 
 }
