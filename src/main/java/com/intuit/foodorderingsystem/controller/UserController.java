@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/v1/user")
 @Log4j2
 @RequiredArgsConstructor
 public class UserController {

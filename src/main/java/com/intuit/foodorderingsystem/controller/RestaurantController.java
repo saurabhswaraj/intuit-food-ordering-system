@@ -11,14 +11,12 @@ import com.intuit.foodorderingsystem.service.RestaurantService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurant")
+@RequestMapping("/v1/restaurant")
 @Log4j2
 @RequiredArgsConstructor
 public class RestaurantController {

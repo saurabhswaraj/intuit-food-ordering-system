@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/menu")
+@RequestMapping("/v1/menu")
 @Log4j2
 @RequiredArgsConstructor
 public class MenuController {
