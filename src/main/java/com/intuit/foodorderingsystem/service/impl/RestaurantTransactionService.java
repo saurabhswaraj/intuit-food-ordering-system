@@ -7,10 +7,11 @@ import com.intuit.foodorderingsystem.entity.RestaurantEntity;
 import com.intuit.foodorderingsystem.model.request.CreateRestaurantRequest;
 import com.intuit.foodorderingsystem.repository.RestaurantCapacityRepository;
 import com.intuit.foodorderingsystem.repository.RestaurantRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +22,7 @@ public class RestaurantTransactionService {
 
     private final RestaurantCapacityRepository restaurantCapacityRepository;
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public RestaurantCapacityEntity saveRestaurantDetails(RestaurantEntity restaurantEntity, CreateRestaurantRequest createRestaurantRequest) {
         restaurantEntity = restaurantRepository.save(restaurantEntity);
         log.info("Restaurant saved with Id " + restaurantEntity.getId());

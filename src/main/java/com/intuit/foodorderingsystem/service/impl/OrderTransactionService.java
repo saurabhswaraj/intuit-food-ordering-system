@@ -19,12 +19,13 @@ import com.intuit.foodorderingsystem.repository.RestaurantMenuRepository;
 import com.intuit.foodorderingsystem.strategy.RestaurantSelectionStrategy;
 import com.intuit.foodorderingsystem.strategy.factory.RestaurantSelectionStrategyFactory;
 import jakarta.persistence.PessimisticLockException;
-import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -53,11 +54,12 @@ public class OrderTransactionService {
     @Value("${thread.config.time-sleep-in-millis}")
     private Long sleepInMilliSec;
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public long processOrder(Long userId, List<CreateOrderRequest> createOrderRequestList) throws InterruptedException {
-
         //create Order
         OrdersEntity ordersEntity = createOrder(userId);
+
+        log.info("Starting order processing for order id "+ordersEntity.getId());
 
         //get Strategy
         RestaurantSelectionStrategy restaurantSelectionStrategy = restaurantSelectionStrategyFactory.getObject();
@@ -73,6 +75,7 @@ public class OrderTransactionService {
                     restaurantCapacityEntities = lockAndGetRestaurantCapacityEntities(restaurantIdQuantityMap);
                     break;
                 } catch (PessimisticLockException pessimisticLockException) {
+                    log.error(pessimisticLockException.getMessage());
                     currentRetryCount++;
                     log.warn("Lock found for restaurant list " + restaurantIdQuantityMap.keySet() + " trying again");
                     Thread.sleep(sleepInMilliSec);
@@ -118,7 +121,7 @@ public class OrderTransactionService {
         return ordersEntity;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void markOrderDispatched(Long orderId, Long restaurantId) throws InterruptedException {
 
         Integer capacity = 0;
