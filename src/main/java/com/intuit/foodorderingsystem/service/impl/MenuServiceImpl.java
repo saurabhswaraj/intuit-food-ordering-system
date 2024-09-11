@@ -11,14 +11,10 @@ import com.intuit.foodorderingsystem.enums.ItemState;
 import com.intuit.foodorderingsystem.enums.RestaurantType;
 import com.intuit.foodorderingsystem.exception.DoNotExistException;
 import com.intuit.foodorderingsystem.exception.IneligibleRequestException;
-import com.intuit.foodorderingsystem.model.dto.CreateItem;
+import com.intuit.foodorderingsystem.model.request.ChangeItemsStateMenuRequest;
 import com.intuit.foodorderingsystem.model.request.CreateMenuRequest;
 import com.intuit.foodorderingsystem.model.request.DeleteItemsMenuRequest;
-import com.intuit.foodorderingsystem.model.request.ChangeItemsStateMenuRequest;
-import com.intuit.foodorderingsystem.model.response.CreateMenuResponse;
-import com.intuit.foodorderingsystem.model.response.EmptyResponse;
-import com.intuit.foodorderingsystem.model.response.GetAllMenuResponse;
-import com.intuit.foodorderingsystem.model.response.GetRestaurantMenuResponse;
+import com.intuit.foodorderingsystem.model.response.*;
 import com.intuit.foodorderingsystem.repository.MenuRepository;
 import com.intuit.foodorderingsystem.repository.RestaurantMenuRepository;
 import com.intuit.foodorderingsystem.repository.RestaurantRepository;
@@ -31,7 +27,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -44,11 +39,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public CreateMenuResponse createMenu(Long restaurantId, CreateMenuRequest createMenuRequest) {
-        RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
-        if(restaurantEntity == null ) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
-        }
-
+        RestaurantEntity restaurantEntity = getActiveRestaurantById(restaurantId);
         standardizeName(createMenuRequest.getItemList());
 
         List<CreateItem> itemListFromRequest = createMenuRequest.getItemList();
@@ -95,23 +86,16 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public GetRestaurantMenuResponse getRestaurantMenu(Long restaurantId) {
-        RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
-        if(restaurantEntity == null ) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
-        }
-
+        RestaurantEntity restaurantEntity = getActiveRestaurantById(restaurantId);
         return GetRestaurantMenuResponseBuilderFactory.build(restaurantId, restaurantEntity);
     }
 
     @Override
     public EmptyResponse deleteItemFromMenu(Long restaurantId, DeleteItemsMenuRequest deleteItemsMenuRequest) {
-        RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
-        if(restaurantEntity == null ) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
-        }
+        getActiveRestaurantById(restaurantId);
 
         List<RestaurantMenuEntity> restaurantMenuEntities = restaurantMenuRepository
-                .findAllByRestaurantIdAndAndMenuIdIn(restaurantId, deleteItemsMenuRequest.getItemListToDelete());
+                .findAllByRestaurantIdAndMenuIdIn(restaurantId, deleteItemsMenuRequest.getItemListToDelete());
 
         restaurantMenuRepository.deleteAll(restaurantMenuEntities);
         return new EmptyResponse();
@@ -119,13 +103,10 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public EmptyResponse outOfStockItemFromMenu(Long restaurantId, ChangeItemsStateMenuRequest changeItemsStateMenuRequest) {
-        RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
-        if(restaurantEntity == null ) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
-        }
+        getActiveRestaurantById(restaurantId);
 
         List<RestaurantMenuEntity> restaurantMenuEntities = restaurantMenuRepository
-                .findAllByRestaurantIdAndAndMenuIdIn(restaurantId, changeItemsStateMenuRequest.getItemListToChangeState());
+                .findAllByRestaurantIdAndMenuIdIn(restaurantId, changeItemsStateMenuRequest.getItemListToChangeState());
 
         restaurantMenuEntities.forEach(restaurantMenuEntity -> restaurantMenuEntity.setItemState(ItemState.OUT_OF_STOCK));
         restaurantMenuRepository.saveAll(restaurantMenuEntities);
@@ -135,13 +116,10 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public EmptyResponse inStockItemFromMenu(Long restaurantId, ChangeItemsStateMenuRequest changeItemsStateMenuRequest) {
-        RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
-        if(restaurantEntity == null ) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
-        }
+        getActiveRestaurantById(restaurantId);
 
         List<RestaurantMenuEntity> restaurantMenuEntities = restaurantMenuRepository
-                .findAllByRestaurantIdAndAndMenuIdIn(restaurantId, changeItemsStateMenuRequest.getItemListToChangeState());
+                .findAllByRestaurantIdAndMenuIdIn(restaurantId, changeItemsStateMenuRequest.getItemListToChangeState());
 
         restaurantMenuEntities.forEach(restaurantMenuEntity -> restaurantMenuEntity.setItemState(ItemState.IN_STOCK));
         restaurantMenuRepository.saveAll(restaurantMenuEntities);
@@ -173,5 +151,13 @@ public class MenuServiceImpl implements MenuService {
         for(CreateItem item : itemList) {
             item.setName(StringUtils.normalizeSpace(item.getName().toLowerCase()));
         }
+    }
+
+    private RestaurantEntity getActiveRestaurantById(Long restaurantId){
+        Optional<RestaurantEntity> restaurantEntityOptional = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
+        if(restaurantEntityOptional.isEmpty() ) {
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
+        }
+        return restaurantEntityOptional.get();
     }
 }

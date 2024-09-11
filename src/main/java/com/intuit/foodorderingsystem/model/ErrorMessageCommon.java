@@ -8,5 +8,5 @@ import lombok.*;
 @Getter
 @Setter
 public class ErrorMessageCommon implements ErrorMessage{
-    private String message;
+    String message;
 }

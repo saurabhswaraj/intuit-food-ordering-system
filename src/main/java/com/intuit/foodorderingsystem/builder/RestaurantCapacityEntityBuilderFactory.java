@@ -2,7 +2,6 @@ package com.intuit.foodorderingsystem.builder;
 
 import com.intuit.foodorderingsystem.entity.RestaurantCapacityEntity;
 import com.intuit.foodorderingsystem.enums.State;
-import com.intuit.foodorderingsystem.model.request.CreateRestaurantRequest;
 
 public class RestaurantCapacityEntityBuilderFactory {
 

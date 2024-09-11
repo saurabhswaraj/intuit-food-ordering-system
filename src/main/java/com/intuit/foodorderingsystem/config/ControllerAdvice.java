@@ -25,7 +25,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler({AlreadyExistException.class, DoNotExistException.class, OrderCanNotBeCreatedException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
-    BaseResponseModel alreadyExistException(Exception exception) {
+    BaseResponseModel<Object> alreadyExistException(Exception exception) {
         ErrorMessageCommon errorMessage = getErrorMessage(exception);
         log.error(errorMessage.getMessage(), exception);
         return new BaseResponseModel<>(errorMessage);
@@ -33,7 +33,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler({PhoneNumberNotValidException.class, IneligibleRequestException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    BaseResponseModel validationErrorPhone(Exception exception) {
+    BaseResponseModel<Object> validationErrorPhone(Exception exception) {
         ErrorMessageCommon errorMessage = getErrorMessage(exception);
         log.error(errorMessage.getMessage(), exception);
         return new BaseResponseModel<>(errorMessage);
@@ -41,7 +41,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler({JsonProcessingException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    BaseResponseModel jsonBadRequest(Exception exception) {
+    BaseResponseModel<Object> jsonBadRequest(Exception exception) {
         ErrorMessageCommon errorMessage = ErrorMessageCommon.builder().message("Unknown properties exist in the request").build();
         log.error(errorMessage.getMessage(), exception);
         return new BaseResponseModel<>(errorMessage);
@@ -50,7 +50,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    BaseResponseModel validationError(Exception exception) {
+    BaseResponseModel<Object> validationError(Exception exception) {
 
         BindingResult bindingResult = ((MethodArgumentNotValidException)exception).getBindingResult();
 
@@ -68,7 +68,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    BaseResponseModel genericException(Exception exception) {
+    BaseResponseModel<Object> genericException(Exception exception) {
         log.error("Something went Wrong", exception);
         return new BaseResponseModel<>(getErrorMessage(exception));
     }

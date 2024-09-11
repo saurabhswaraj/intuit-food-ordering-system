@@ -25,7 +25,7 @@ Implement an online food ordering system the details of
    a. Customer here just inputs the item and its quantity,the system depending on
    the restaurant selection strategy should select and place the order
    accordingly
-   a. Items of the given quantity can be served from multiple restaurants.
+   b. Items of the given quantity can be served from multiple restaurants.
 4. Restaurants should not breach their processing capacity.
 5. The restaurant selection strategy should be configurable.
 6. Implement the lower cost restaurant selection strategy.
@@ -36,10 +36,12 @@ Implement an online food ordering system the details of
 Assumptions
 > If contact number is same then restaurant is duplicate
 
->If restaurant has to increase the order capacity they have to get approval from cms this is not implemented yet but in database schema it is considered
+>If restaurant has to increase the order capacity they have to get approval from cms this is not implemented yet but in database schema it is considered because max capacity can be associated with a pricing or subscription plans
+
+> For now the code has 2 order status PROCESSING and DISPATCHED as rider side code and restaurant acceptance code is not there
 
 > Restaurants can also disable themselves. After disabling they will not be visible anywhere
 
 > If restaurants label themselves as veg then they can add just veg menu Items
 
-> 
+> processing capacity is the maximum number of items that the restaurant can process at any given time

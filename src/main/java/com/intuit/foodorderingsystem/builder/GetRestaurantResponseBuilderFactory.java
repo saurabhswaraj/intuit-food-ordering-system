@@ -2,7 +2,6 @@ package com.intuit.foodorderingsystem.builder;
 
 import com.intuit.foodorderingsystem.entity.RestaurantCapacityEntity;
 import com.intuit.foodorderingsystem.entity.RestaurantEntity;
-import com.intuit.foodorderingsystem.model.response.CreateRestaurantResponse;
 import com.intuit.foodorderingsystem.model.response.GetRestaurantResponse;
 
 

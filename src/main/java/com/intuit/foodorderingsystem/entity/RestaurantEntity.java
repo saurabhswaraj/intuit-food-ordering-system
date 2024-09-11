@@ -11,7 +11,7 @@ import java.util.List;
 @ToString
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity(name = "restaurant")
 public class RestaurantEntity {
     @Id

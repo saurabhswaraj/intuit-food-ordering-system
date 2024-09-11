@@ -1,7 +1,6 @@
 package com.intuit.foodorderingsystem.entity;
 
 import com.intuit.foodorderingsystem.enums.ItemState;
-import com.intuit.foodorderingsystem.enums.State;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 public class RestaurantMenuEntity {
 

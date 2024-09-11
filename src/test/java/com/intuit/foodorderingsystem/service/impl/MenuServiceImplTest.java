@@ -7,7 +7,7 @@ import com.intuit.foodorderingsystem.enums.FoodType;
 import com.intuit.foodorderingsystem.enums.RestaurantType;
 import com.intuit.foodorderingsystem.exception.DoNotExistException;
 import com.intuit.foodorderingsystem.exception.IneligibleRequestException;
-import com.intuit.foodorderingsystem.model.dto.CreateItem;
+import com.intuit.foodorderingsystem.model.response.CreateItem;
 import com.intuit.foodorderingsystem.model.request.CreateMenuRequest;
 import com.intuit.foodorderingsystem.model.response.CreateMenuResponse;
 import com.intuit.foodorderingsystem.model.response.GetAllMenuResponse;
@@ -67,9 +67,17 @@ public class MenuServiceImplTest {
                                         .state("Karnataka")
                                         .isActive(true)
                                         .build();
-        MenuEntity menuEntity1 = new MenuEntity(2L, "item2 space", FoodType.VEG, null);
-        MenuEntity menuEntity2 = new MenuEntity(3L, "item1", FoodType.VEG, null);
-        when(restaurantRepository.findByIdAndIsActiveTrue(1L)).thenReturn(restaurantEntity);
+        MenuEntity menuEntity1 = MenuEntity.builder()
+                .id(2L)
+                .name("item2 space")
+                .foodType(FoodType.VEG)
+                .build();
+        MenuEntity menuEntity2 = MenuEntity.builder()
+                .id(3L)
+                .name("item1")
+                .foodType(FoodType.VEG)
+                .build();
+        when(restaurantRepository.findByIdAndIsActiveTrue(1L)).thenReturn(Optional.of(restaurantEntity));
         when(menuRepository.findByNameIn(anyList())).thenReturn(new ArrayList<>(List.of(menuEntity1)));
         when(menuRepository.saveAll(anyList())).thenReturn(new ArrayList<>(List.of(menuEntity2)));
         when(restaurantMenuRepository.saveAll(anyList())).thenReturn(null);
@@ -96,7 +104,7 @@ public class MenuServiceImplTest {
 
     @Test
     void testCreateMenuThrowDoNotExistException_Negative() {
-        when(restaurantRepository.findByIdAndIsActiveTrue(1L)).thenReturn(null);
+        when(restaurantRepository.findByIdAndIsActiveTrue(1L)).thenReturn(Optional.empty());
         DoNotExistException doNotExistException = assertThrows(DoNotExistException.class,
                 () -> menuService.createMenu(1L,null));
 
@@ -129,7 +137,7 @@ public class MenuServiceImplTest {
                 .isActive(true)
                 .build();
 
-        when(restaurantRepository.findByIdAndIsActiveTrue(1L)).thenReturn(restaurantEntity);
+        when(restaurantRepository.findByIdAndIsActiveTrue(1L)).thenReturn(Optional.of(restaurantEntity));
         IneligibleRequestException ineligibleRequestException = assertThrows(IneligibleRequestException.class,
                 () -> menuService.createMenu(1L,createMenuRequest));
 
@@ -162,7 +170,7 @@ public class MenuServiceImplTest {
                 .isActive(true)
                 .build();
 
-        when(restaurantRepository.findByIdAndIsActiveTrue(1L)).thenReturn(restaurantEntity);
+        when(restaurantRepository.findByIdAndIsActiveTrue(1L)).thenReturn(Optional.of(restaurantEntity));
         IneligibleRequestException ineligibleRequestException = assertThrows(IneligibleRequestException.class,
                 () -> menuService.createMenu(1L,createMenuRequest));
 
@@ -172,8 +180,16 @@ public class MenuServiceImplTest {
 
     @Test
     void getAllItems_Success() {
-        MenuEntity menuEntity1 = new MenuEntity(2L, "item2 space", FoodType.VEG, null);
-        MenuEntity menuEntity2 = new MenuEntity(3L, "item1", FoodType.VEG, null);
+        MenuEntity menuEntity1 = MenuEntity.builder()
+                .id(2L)
+                .name("item2 space")
+                .foodType(FoodType.VEG)
+                .build();
+        MenuEntity menuEntity2 = MenuEntity.builder()
+                .id(3L)
+                .name("item1")
+                .foodType(FoodType.VEG)
+                .build();
         Page<MenuEntity> menuEntityPage = new PageImpl<>(Arrays.asList(menuEntity1, menuEntity2));
         when(menuRepository.findAll((Pageable)any())).thenReturn(menuEntityPage);
 

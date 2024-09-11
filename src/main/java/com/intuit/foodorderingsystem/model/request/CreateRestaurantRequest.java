@@ -1,6 +1,5 @@
 package com.intuit.foodorderingsystem.model.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.intuit.foodorderingsystem.constant.Messages;
 import com.intuit.foodorderingsystem.constant.RegexConstants;
 import com.intuit.foodorderingsystem.enums.RestaurantType;
@@ -11,24 +10,31 @@ import lombok.*;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 public class CreateRestaurantRequest {
+
     @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)
-    String name;
+    private String name;
+
     @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)
-    String address;
+    private String address;
+
     @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)
-    String city;
+    private String city;
+
     @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)
-    String state;
+    private String state;
+
     @NotBlank(message = Messages.VALUE_CAN_NOT_BE_EMPTY)
-    String pinCode;
-    @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
-    Integer maxOrderCapacity;
-    @Pattern(regexp = RegexConstants.PHONE_NUMBER_REGEX)
-    String contactNumber;
+    private String pinCode;
 
     @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
-    RestaurantType restaurantType;
+    private Integer maxOrderCapacity;
+
+    @Pattern(regexp = RegexConstants.PHONE_NUMBER_REGEX)
+    private String contactNumber;
+
+    @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
+    private RestaurantType restaurantType;
 }

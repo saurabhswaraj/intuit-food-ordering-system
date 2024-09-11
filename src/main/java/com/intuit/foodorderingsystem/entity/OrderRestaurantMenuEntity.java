@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
 public class OrderRestaurantMenuEntity {
     @Id

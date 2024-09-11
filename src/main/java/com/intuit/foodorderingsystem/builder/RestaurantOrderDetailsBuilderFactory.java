@@ -1,8 +1,8 @@
 package com.intuit.foodorderingsystem.builder;
 
 import com.intuit.foodorderingsystem.entity.RestaurantEntity;
-import com.intuit.foodorderingsystem.model.dto.ItemOrderDetails;
-import com.intuit.foodorderingsystem.model.dto.RestaurantOrderDetails;
+import com.intuit.foodorderingsystem.model.response.ItemOrderDetails;
+import com.intuit.foodorderingsystem.model.response.RestaurantOrderDetails;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ public class RestaurantOrderDetailsBuilderFactory {
                 .restaurantState(restaurantEntity.getState())
                 .restaurantPinCode(restaurantEntity.getPinCode())
                 .restaurantContactNumber(restaurantEntity.getContactNumber())
+                .restaurantType(restaurantEntity.getRestaurantType())
                 .itemOrderDetailsList(itemOrderDetailsList)
                 .totalRestaurantPrice(restaurantItemsPrice)
                 .build();

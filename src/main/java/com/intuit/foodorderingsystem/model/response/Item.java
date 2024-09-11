@@ -1,4 +1,4 @@
-package com.intuit.foodorderingsystem.model.dto;
+package com.intuit.foodorderingsystem.model.response;
 
 import com.intuit.foodorderingsystem.enums.FoodType;
 import com.intuit.foodorderingsystem.enums.ItemState;
@@ -10,10 +10,10 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Item {
-    Long menuId;
-    String name;
-    Float price;
-    FoodType foodType;
-    Float rating;
-    ItemState itemState;
+    private Long menuId;
+    private String name;
+    private Float price;
+    private FoodType foodType;
+    private Float rating;
+    private ItemState itemState;
 }

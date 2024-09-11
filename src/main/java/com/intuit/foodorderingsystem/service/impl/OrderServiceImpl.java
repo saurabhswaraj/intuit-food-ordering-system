@@ -5,24 +5,26 @@ import com.intuit.foodorderingsystem.builder.GetOrderDetailsResponseBuilderFacto
 import com.intuit.foodorderingsystem.builder.ItemOrderDetailsBuilderFactory;
 import com.intuit.foodorderingsystem.builder.RestaurantOrderDetailsBuilderFactory;
 import com.intuit.foodorderingsystem.constant.Messages;
-import com.intuit.foodorderingsystem.entity.*;
+import com.intuit.foodorderingsystem.entity.OrderRestaurantMenuEntity;
+import com.intuit.foodorderingsystem.entity.OrdersEntity;
+import com.intuit.foodorderingsystem.entity.RestaurantEntity;
+import com.intuit.foodorderingsystem.entity.UsersEntity;
 import com.intuit.foodorderingsystem.exception.DoNotExistException;
-import com.intuit.foodorderingsystem.model.dto.ItemOrderDetails;
-import com.intuit.foodorderingsystem.model.dto.RestaurantOrderDetails;
 import com.intuit.foodorderingsystem.model.request.CreateOrderRequest;
-
 import com.intuit.foodorderingsystem.model.request.MarkDispatchOrderRequest;
-import com.intuit.foodorderingsystem.model.response.CreateOrderResponse;
-import com.intuit.foodorderingsystem.model.response.EmptyResponse;
-import com.intuit.foodorderingsystem.model.response.GetorderDetailsResponse;
-import com.intuit.foodorderingsystem.repository.*;
-import com.intuit.foodorderingsystem.service.OrderService;
+import com.intuit.foodorderingsystem.model.response.*;
 import com.intuit.foodorderingsystem.observer.OrderDispatchedNotificationSubject;
 import com.intuit.foodorderingsystem.observer.OrderNotificationSubject;
+import com.intuit.foodorderingsystem.repository.OrdersRepository;
+import com.intuit.foodorderingsystem.repository.OrdersRestaurantMenuRepository;
+import com.intuit.foodorderingsystem.repository.RestaurantRepository;
+import com.intuit.foodorderingsystem.repository.UserRepository;
+import com.intuit.foodorderingsystem.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 
@@ -39,12 +41,12 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDispatchedNotificationSubject orderDispatchedNotificationSubject;
     private final OrderTransactionService orderTransactionService;
 
-    @Override
-    public CreateOrderResponse createOrder(Long userId, List<CreateOrderRequest> createOrderRequestList) {
+    private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
-        if (!userExist(userId)) {
-            throw new DoNotExistException(Messages.USER_NOT_EXIST);
-        }
+    @Override
+    public CreateOrderResponse createOrder(Long userId, List<CreateOrderRequest> createOrderRequestList) throws InterruptedException {
+
+        checkIfUserExists(userId);
         Long orderId = orderTransactionService.processOrder(userId, createOrderRequestList);
 
         orderNotificationSubject.notifyObservers(orderId);
@@ -53,14 +55,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public EmptyResponse markOrderDispatched(MarkDispatchOrderRequest markDispatchOrderRequest) {
-        if (!restaurantExist(markDispatchOrderRequest.getRestaurantId())) {
-            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
-        }
+    public EmptyResponse markOrderDispatched(MarkDispatchOrderRequest markDispatchOrderRequest) throws InterruptedException {
+        getActiveRestaurantById(markDispatchOrderRequest.getRestaurantId());
 
-        if (!orderExist(markDispatchOrderRequest.getOrderId())) {
-            throw new DoNotExistException(Messages.ORDER_NOT_EXIST);
-        }
+        getIfOrderExists(markDispatchOrderRequest.getOrderId());
+
         orderTransactionService.markOrderDispatched(markDispatchOrderRequest.getOrderId(), markDispatchOrderRequest.getRestaurantId());
 
         orderDispatchedNotificationSubject.notifyObservers(markDispatchOrderRequest.getOrderId());
@@ -71,10 +70,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public GetorderDetailsResponse getOrderDetails(Long orderId) {
 
-        if (!orderExist(orderId)) {
-            throw new DoNotExistException(Messages.ORDER_NOT_EXIST);
-        }
-
+        OrdersEntity ordersEntity = getIfOrderExists(orderId);
         Map<Long, List<ItemOrderDetails>> restaurantIdOrderDetailsMap = new HashMap<>();
 
         List<OrderRestaurantMenuEntity> orderRestaurantMenuEntityList = ordersRestaurantMenuRepository.findAllByOrderId(orderId);
@@ -82,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
         for(OrderRestaurantMenuEntity orderRestaurantMenuEntity : orderRestaurantMenuEntityList) {
             ItemOrderDetails itemOrderDetails = ItemOrderDetailsBuilderFactory.build(orderRestaurantMenuEntity);
             if (!restaurantIdOrderDetailsMap.containsKey(orderRestaurantMenuEntity.getRestaurantId())) {
-                restaurantIdOrderDetailsMap.put(orderRestaurantMenuEntity.getRestaurantId(), new LinkedList<ItemOrderDetails>(List.of(itemOrderDetails)));
+                restaurantIdOrderDetailsMap.put(orderRestaurantMenuEntity.getRestaurantId(), new LinkedList<>(List.of(itemOrderDetails)));
             } else {
                 restaurantIdOrderDetailsMap.get(orderRestaurantMenuEntity.getRestaurantId()).add(itemOrderDetails);
             }
@@ -90,41 +86,47 @@ public class OrderServiceImpl implements OrderService {
 
         List<RestaurantOrderDetails> restaurantOrderDetailsList = new LinkedList<>();
 
-        Float totalOrderPrice = (float) 0;
+        float totalOrderPrice = (float) 0;
         for (Map.Entry<Long, List<ItemOrderDetails>> mapElement : restaurantIdOrderDetailsMap.entrySet()) {
-            Long k = mapElement.getKey();
-            List<ItemOrderDetails> v = mapElement.getValue();
-            RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(k);
+            Long restuarantId = mapElement.getKey();
+            List<ItemOrderDetails> orderDetails = mapElement.getValue();
+            RestaurantEntity restaurantEntity = getActiveRestaurantById(restuarantId);
 
-            Float restaurantItemPrice = (float) 0;
-            for(ItemOrderDetails itemOrderDetails : v) {
+            float restaurantItemPrice = (float) 0;
+            for(ItemOrderDetails itemOrderDetails : orderDetails) {
                 restaurantItemPrice += itemOrderDetails.getTotalPrice();
             }
             totalOrderPrice += restaurantItemPrice;
 
-            restaurantOrderDetailsList.add(RestaurantOrderDetailsBuilderFactory.build(restaurantEntity, v, restaurantItemPrice));
+            restaurantOrderDetailsList.add(RestaurantOrderDetailsBuilderFactory.build(restaurantEntity, orderDetails, Float.valueOf(decimalFormat.format(restaurantItemPrice))));
         }
 
-        Optional<OrdersEntity> ordersEntityOptional = ordersRepository.findById(orderId);
-        OrdersEntity ordersEntity = ordersEntityOptional.get();
-
-        return GetOrderDetailsResponseBuilderFactory.build(ordersEntity,restaurantOrderDetailsList, totalOrderPrice);
+        return GetOrderDetailsResponseBuilderFactory.build(ordersEntity,restaurantOrderDetailsList, Float.valueOf(decimalFormat.format(totalOrderPrice)));
 
     }
 
 
-    private Boolean userExist(Long userId) {
+    private void checkIfUserExists(Long userId) {
         Optional<UsersEntity> usersEntityOptional = userRepository.findById(userId);
-        return usersEntityOptional.isPresent();
+        if (usersEntityOptional.isEmpty()) {
+            throw new DoNotExistException(Messages.USER_NOT_EXIST);
+        }
     }
 
-    private Boolean restaurantExist(Long restaurantId) {
-        RestaurantEntity restaurantEntity = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
-        return restaurantEntity != null;
+
+    private RestaurantEntity getActiveRestaurantById(Long restaurantId){
+        Optional<RestaurantEntity> restaurantEntityOptional = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
+        if(restaurantEntityOptional.isEmpty() ) {
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
+        }
+        return restaurantEntityOptional.get();
     }
 
-    private Boolean orderExist(Long orderId) {
+    private OrdersEntity getIfOrderExists(Long orderId) {
         Optional<OrdersEntity> ordersEntityOptional = ordersRepository.findById(orderId);
-        return ordersEntityOptional.isPresent();
+        if (ordersEntityOptional.isEmpty()) {
+            throw new DoNotExistException(Messages.ORDER_NOT_EXIST);
+        }
+        return ordersEntityOptional.get();
     }
 }

@@ -12,8 +12,8 @@ import java.util.List;
 @Component
 @Log4j2
 public class OrderNotificationSubjectImpl implements OrderNotificationSubject {
-    private List<OrderNotificationObserver> observers = new ArrayList<>();
-    private Long orderId;
+
+    private final List<OrderNotificationObserver> observers = new ArrayList<>();
 
     @Override
     public void addObserver(OrderNotificationObserver observer) {
@@ -27,7 +27,6 @@ public class OrderNotificationSubjectImpl implements OrderNotificationSubject {
 
     @Override
     public void notifyObservers(Long orderId) {
-        this.orderId = orderId;
         for (OrderNotificationObserver orderNotificationObserver : observers) {
             orderNotificationObserver.update(orderId);
         }

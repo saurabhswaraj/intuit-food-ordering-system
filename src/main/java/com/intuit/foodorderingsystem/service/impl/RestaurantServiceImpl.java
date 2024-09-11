@@ -95,7 +95,7 @@ public class RestaurantServiceImpl implements RestaurantService {
             if(!editRestaurantRequest.getContactNumber().matches(RegexConstants.PHONE_NUMBER_REGEX)) {
                 throw new PhoneNumberNotValidException(Messages.PHONE_NUMBER_CHECK);
             }
-            if (restaurantRepository.findByContactNumberAndIsActiveTrue(editRestaurantRequest.getContactNumber()) != null
+            if (restaurantRepository.findByContactNumberAndIsActiveTrue(editRestaurantRequest.getContactNumber()).isPresent()
              && !editRestaurantRequest.getContactNumber().equals(restaurantEntity.getContactNumber())) {
                 throw new AlreadyExistException("This contact number is already registered");
             }
@@ -131,12 +131,16 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     private Boolean restaurantExist(String contactNumber) {
-        RestaurantEntity restaurantEntity = restaurantRepository.findByContactNumber(contactNumber);
-        return restaurantEntity != null;
+        Optional<RestaurantEntity> restaurantEntityOptional = restaurantRepository.findByContactNumber(contactNumber);
+        return restaurantEntityOptional.isPresent();
     }
 
     private RestaurantEntity getRestaurantEntity(Long restaurantId) {
-        return restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
+        Optional<RestaurantEntity> restaurantEntityOptional = restaurantRepository.findByIdAndIsActiveTrue(restaurantId);
+        if(restaurantEntityOptional.isEmpty() ) {
+            throw new DoNotExistException(Messages.RESTAURANT_NOT_EXIST_OR_DISABLED);
+        }
+        return restaurantEntityOptional.get();
     }
 
 

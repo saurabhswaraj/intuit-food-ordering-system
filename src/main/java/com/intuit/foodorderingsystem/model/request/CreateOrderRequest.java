@@ -7,12 +7,13 @@ import lombok.*;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 public class CreateOrderRequest {
-    @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
-    Long menuId;
 
     @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
-    Integer quantity;
+    private Long menuId;
+
+    @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
+    private Integer quantity;
 }

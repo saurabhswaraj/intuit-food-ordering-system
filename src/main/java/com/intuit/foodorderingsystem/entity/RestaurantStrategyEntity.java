@@ -1,17 +1,14 @@
 package com.intuit.foodorderingsystem.entity;
 
-import com.intuit.foodorderingsystem.enums.OrderStatus;
 import com.intuit.foodorderingsystem.enums.State;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.ZonedDateTime;
 
 @Entity(name = "restaurant_strategy")
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
 public class RestaurantStrategyEntity {
     @Id

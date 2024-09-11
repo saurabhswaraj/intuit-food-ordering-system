@@ -1,6 +1,5 @@
 package com.intuit.foodorderingsystem.repository;
 
-import com.intuit.foodorderingsystem.entity.MenuEntity;
 import com.intuit.foodorderingsystem.entity.RestaurantMenuCompositeKey;
 import com.intuit.foodorderingsystem.entity.RestaurantMenuEntity;
 import com.intuit.foodorderingsystem.enums.ItemState;
@@ -8,16 +7,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RestaurantMenuRepository extends JpaRepository<RestaurantMenuEntity, RestaurantMenuCompositeKey> {
 
-    List<RestaurantMenuEntity> findAllByRestaurantId(Long restaurantId);
+    List<RestaurantMenuEntity> findAllByRestaurantIdAndMenuIdIn(Long restaurantId, List<Long> menuIds);
 
-    List<RestaurantMenuEntity> findAllByRestaurantIdAndAndMenuIdIn(Long restaurantId, List<Long> menuIds);
+    Optional<RestaurantMenuEntity> findByRestaurantIdAndMenuId(Long restaurantId, Long menuId);
 
-    RestaurantMenuEntity findByRestaurantIdAndMenuId(Long restaurantId, Long menuId);
-
-    List<RestaurantMenuEntity> findAllByMenuIdAndItemStateOrderByPrice(Long menuId, ItemState itemState);
+    List<RestaurantMenuEntity> findAllByMenuIdAndItemStateAndRestaurantEntity_IsActiveTrueOrderByPrice(Long menuId, ItemState itemState);
 
 }

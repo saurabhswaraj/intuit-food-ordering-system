@@ -24,7 +24,7 @@ public class RestaurantTransactionService {
     @Transactional
     public RestaurantCapacityEntity saveRestaurantDetails(RestaurantEntity restaurantEntity, CreateRestaurantRequest createRestaurantRequest) {
         restaurantEntity = restaurantRepository.save(restaurantEntity);
-        log.info(restaurantEntity);
+        log.info("Restaurant saved with Id " + restaurantEntity.getId());
         RestaurantCapacityEntity restaurantCapacityEntity = RestaurantCapacityEntityBuilderFactory.build(
                 createRestaurantRequest.getMaxOrderCapacity(), restaurantEntity.getId());
         restaurantCapacityEntity = restaurantCapacityRepository.save(restaurantCapacityEntity);

@@ -23,7 +23,8 @@ public class RiderOrderNotification implements OrderNotificationObserver {
 
     @Override
     public void update(Long orderId) {
-        log.info("Sending Rider Service a notification about order");
+        log.info("Sending Riders a notification about order");
         log.info("OrderId :"+orderId);
+        //Sending notification about orders which will send websocket notification / app notification to riders about new order
     }
 }

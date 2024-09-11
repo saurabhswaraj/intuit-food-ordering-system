@@ -1,7 +1,7 @@
 package com.intuit.foodorderingsystem.builder;
 
 import com.intuit.foodorderingsystem.entity.RestaurantMenuEntity;
-import com.intuit.foodorderingsystem.model.dto.Item;
+import com.intuit.foodorderingsystem.model.response.Item;
 
 public class ItemBuilderFactory {
 

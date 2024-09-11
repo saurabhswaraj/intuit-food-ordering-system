@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity(name = "restaurant_capacity")
 public class RestaurantCapacityEntity {
     @Id

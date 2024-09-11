@@ -7,11 +7,16 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RestaurantRepository extends PagingAndSortingRepository<RestaurantEntity, Long>, JpaRepository<RestaurantEntity, Long> {
-    RestaurantEntity findByContactNumber(String contactNumber);
+
+    Optional<RestaurantEntity> findByContactNumber(String contactNumber);
+
     List<RestaurantEntity> findAllByIsActiveTrue(Pageable pageable);
-    RestaurantEntity findByIdAndIsActiveTrue(Long id);
-    RestaurantEntity findByContactNumberAndIsActiveTrue(String contactNumber);
+
+    Optional<RestaurantEntity> findByIdAndIsActiveTrue(Long id);
+
+    Optional<RestaurantEntity> findByContactNumberAndIsActiveTrue(String contactNumber);
 }

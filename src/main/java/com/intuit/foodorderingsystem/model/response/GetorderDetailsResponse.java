@@ -1,7 +1,6 @@
 package com.intuit.foodorderingsystem.model.response;
 
 import com.intuit.foodorderingsystem.enums.OrderStatus;
-import com.intuit.foodorderingsystem.model.dto.RestaurantOrderDetails;
 import lombok.Builder;
 import lombok.Value;
 

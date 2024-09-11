@@ -1,7 +1,6 @@
 package com.intuit.foodorderingsystem.repository;
 
 import com.intuit.foodorderingsystem.entity.RestaurantCapacityEntity;
-import com.intuit.foodorderingsystem.entity.RestaurantEntity;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.QueryHint;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +20,5 @@ public interface RestaurantCapacityRepository extends JpaRepository<RestaurantCa
 
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @QueryHints({@QueryHint(name = "jakarta.persistence.lock.timeout", value="5000")})
-    RestaurantCapacityEntity findByRestaurantId(Long restaurantId);
+    Optional<RestaurantCapacityEntity> findByRestaurantId(Long restaurantId);
 }

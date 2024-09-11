@@ -3,7 +3,6 @@ package com.intuit.foodorderingsystem.service.impl;
 import com.intuit.foodorderingsystem.builder.CreateUserResponseBuilderFactory;
 import com.intuit.foodorderingsystem.builder.UsersEntityBuilderFactory;
 import com.intuit.foodorderingsystem.constant.Messages;
-import com.intuit.foodorderingsystem.entity.RestaurantEntity;
 import com.intuit.foodorderingsystem.entity.UsersEntity;
 import com.intuit.foodorderingsystem.exception.DoNotExistException;
 import com.intuit.foodorderingsystem.model.request.CreateUserRequest;
@@ -13,6 +12,8 @@ import com.intuit.foodorderingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -34,8 +35,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private Boolean userExist(String contactNumber) {
-        UsersEntity usersEntity = userRepository.findByContactNumber(contactNumber);
-        return usersEntity != null;
+        Optional<UsersEntity> usersEntityOptional = userRepository.findByContactNumber(contactNumber);
+        return usersEntityOptional.isPresent();
     }
 
 

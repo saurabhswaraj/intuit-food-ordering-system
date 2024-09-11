@@ -8,9 +8,10 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 public class ChangeItemsStateMenuRequest {
+
     @NotEmpty(message = Messages.LIST_CAN_NOT_BE_EMPTY)
-    List<Long> itemListToChangeState;
+    private List<Long> itemListToChangeState;
 }

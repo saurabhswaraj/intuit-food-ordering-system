@@ -6,12 +6,13 @@ import lombok.*;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 public class MarkDispatchOrderRequest {
-    @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
-    Long orderId;
 
     @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
-    Long restaurantId;
+    private Long orderId;
+
+    @NotNull(message = Messages.VALUE_CAN_NOT_BE_NULL)
+    private Long restaurantId;
 }

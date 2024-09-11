@@ -1,9 +1,7 @@
 package com.intuit.foodorderingsystem.builder;
 
 import com.intuit.foodorderingsystem.entity.OrdersEntity;
-import com.intuit.foodorderingsystem.entity.RestaurantEntity;
-import com.intuit.foodorderingsystem.model.dto.ItemOrderDetails;
-import com.intuit.foodorderingsystem.model.dto.RestaurantOrderDetails;
+import com.intuit.foodorderingsystem.model.response.RestaurantOrderDetails;
 import com.intuit.foodorderingsystem.model.response.GetorderDetailsResponse;
 
 import java.util.List;

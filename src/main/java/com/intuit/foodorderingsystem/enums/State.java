@@ -1,7 +1,5 @@
 package com.intuit.foodorderingsystem.enums;
 
-import org.springframework.data.domain.Persistable;
-
 public enum State implements PersistableEnum<String> {
     ACTIVE("ACTIVE"),
     INACTIVE("INACTIVE");

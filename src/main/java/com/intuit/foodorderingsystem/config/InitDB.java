@@ -16,11 +16,19 @@ public class InitDB implements ApplicationRunner {
     private final RestaurantStrategyRepository restaurantStrategyRepository;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         long count = restaurantStrategyRepository.count();
         if(count == 0) {
-            restaurantStrategyRepository.save(new RestaurantStrategyEntity(1L, "LowestCostRestaurantSelection", State.ACTIVE));
-            restaurantStrategyRepository.save(new RestaurantStrategyEntity(2L, "BetterRatingRestaurantSelection", State.INACTIVE));
+            restaurantStrategyRepository.save(RestaurantStrategyEntity.builder()
+                            .id(1L)
+                            .strategyQualifierName("LowestCostRestaurantSelection")
+                            .state(State.ACTIVE)
+                                    .build());
+            restaurantStrategyRepository.save(RestaurantStrategyEntity.builder()
+                    .id(2L)
+                    .strategyQualifierName("BetterRatingRestaurantSelection")
+                    .state(State.INACTIVE)
+                    .build());
         }
     }
 }

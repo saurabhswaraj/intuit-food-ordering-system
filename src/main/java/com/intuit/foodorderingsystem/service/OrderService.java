@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface OrderService {
 
-    CreateOrderResponse createOrder(Long userId, List<CreateOrderRequest> createOrderRequestList);
+    CreateOrderResponse createOrder(Long userId, List<CreateOrderRequest> createOrderRequestList) throws InterruptedException;
 
-    EmptyResponse markOrderDispatched(MarkDispatchOrderRequest markDispatchOrderRequest);
+    EmptyResponse markOrderDispatched(MarkDispatchOrderRequest markDispatchOrderRequest) throws InterruptedException;
 
     GetorderDetailsResponse getOrderDetails(Long orderId);
 

@@ -4,13 +4,13 @@ import lombok.*;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 public class EditRestaurantRequest {
-    String name;
-    String address;
-    String city;
-    String state;
-    String pinCode;
-    String contactNumber;
+    private String name;
+    private String address;
+    private String city;
+    private String state;
+    private String pinCode;
+    private String contactNumber;
 }

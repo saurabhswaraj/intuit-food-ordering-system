@@ -32,6 +32,7 @@ public class OrderCompletion implements OrderDispatchedNotificationObserver {
         orderDispatchedNotificationSubject.addObserver(this);
     }
 
+    //Once we implement delivery systems, status can be changed accordingly
     @Override
     public void update(Long orderId) {
         List<OrderRestaurantMenuEntity> orderRestaurantMenuEntityList = ordersRestaurantMenuRepository.findAllByOrderId(orderId);

@@ -8,9 +8,10 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 public class DeleteItemsMenuRequest {
+
     @NotEmpty(message = Messages.LIST_CAN_NOT_BE_EMPTY)
-    List<Long> itemListToDelete;
+    private List<Long> itemListToDelete;
 }

@@ -14,3 +14,7 @@ logging:
   level:
     org.springframework.web: DEBUG
 
+thread:
+  config:
+    time-sleep-in-millis: 200
+    retries: 3

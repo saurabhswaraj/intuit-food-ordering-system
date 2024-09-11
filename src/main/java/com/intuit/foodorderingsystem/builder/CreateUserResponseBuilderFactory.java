@@ -1,7 +1,6 @@
 package com.intuit.foodorderingsystem.builder;
 
 import com.intuit.foodorderingsystem.entity.UsersEntity;
-import com.intuit.foodorderingsystem.model.request.CreateUserRequest;
 import com.intuit.foodorderingsystem.model.response.CreateUserResponse;
 
 public class CreateUserResponseBuilderFactory {

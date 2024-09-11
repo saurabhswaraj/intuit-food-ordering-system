@@ -1,10 +1,8 @@
 package com.intuit.foodorderingsystem.strategy;
 
-import com.intuit.foodorderingsystem.entity.RestaurantEntity;
-
-import java.util.List;
+import java.util.Map;
 
 public interface RestaurantSelectionStrategy {
 
-    List<RestaurantEntity> select(Long menuId, Integer quantity);
+    Map<Long, Integer> select(Long menuId, Integer quantity);
 }

@@ -1,14 +1,10 @@
 package com.intuit.foodorderingsystem.builder;
 
 import com.intuit.foodorderingsystem.entity.OrderRestaurantMenuEntity;
-import com.intuit.foodorderingsystem.entity.RestaurantMenuEntity;
-import com.intuit.foodorderingsystem.enums.ItemState;
 import com.intuit.foodorderingsystem.enums.OrderStatus;
-import com.intuit.foodorderingsystem.model.dto.CreateItem;
 import com.intuit.foodorderingsystem.model.request.CreateOrderRequest;
 
 import java.time.ZonedDateTime;
-import java.util.Map;
 
 public class OrderRestaurantMenuEntityBuilderFactory {
 
